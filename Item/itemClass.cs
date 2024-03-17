@@ -14,7 +14,7 @@ namespace MazeTPRG.Item
     }
     internal abstract class itemClass
     {
-        protected string name;
+        protected string name = string.Empty;
         protected item_Type type;
         protected int EffectValue;
 

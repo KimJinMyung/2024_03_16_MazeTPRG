@@ -53,7 +53,7 @@ namespace MazeTPRG.Inventory
                 equipedInventory.Remove(parts);                             
             }
         }
-
+        //동일한 아이템이 사용되면
         public void Remove(string name)
         {
             foreach (var item in equipedInventory)
@@ -68,6 +68,24 @@ namespace MazeTPRG.Inventory
                     //equipedInventory.Remove(item.Key);
                 }
             }
+        }
+
+
+        public void Print()
+        {
+            Console.WriteLine("========================");
+            foreach (var item in Enum.GetValues(typeof(Parts)))
+            {
+                if (equipedInventory.ContainsKey((Parts)item))
+                {
+                    Console.WriteLine($"{item} : {equipedInventory[(Parts)item].GetName}");
+                }
+                else
+                {
+                    Console.WriteLine($"{item} : ");
+                }
+            }
+            Console.WriteLine("========================\n");
         }
     }
 }

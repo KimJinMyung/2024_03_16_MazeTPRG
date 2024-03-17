@@ -58,5 +58,16 @@ namespace MazeTPRG.Inventory
             }
             return false;
         }
+
+        //인벤토리 출력
+        public void Print()
+        {
+            Console.WriteLine("========================");
+            foreach (var item in itemInventoryDic)
+            {
+                Console.WriteLine($"{item.Key.GetName} : X {item.Value}");
+            }
+            Console.WriteLine("========================\n");
+        }
     }
 }
