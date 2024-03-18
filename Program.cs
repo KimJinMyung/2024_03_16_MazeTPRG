@@ -14,6 +14,12 @@ namespace MazeTPRG
             //플레이어 선언
             Player player = Player.Instance;
 
+            for(int i = 0; i < 18; i++)
+            {
+                Console.SetCursorPosition(10, 3 + i);
+                Console.Write("sdadadasdasasda");
+            }
+            Console.ReadKey();
             //Console.WriteLine("sdfsddsfsdfdfssfsfsfd");
             //for(int i = 0; i < 10; i++)
             //{
