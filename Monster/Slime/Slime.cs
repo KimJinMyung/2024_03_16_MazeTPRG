@@ -14,6 +14,7 @@ namespace MazeTPRG.Monster.Slime
             HP = 80;
             ATK = 8;
             Defense = 1;
+            Speed = 2;
             GiveEXP = 8;
 
             SkillName = "산성 침뱉기";
@@ -27,21 +28,21 @@ namespace MazeTPRG.Monster.Slime
         public bool CommonAttack(Player player)
         {
             bool BattleEnd = false;
+            Console.WriteLine($"{Name}의 공격!!\n");
             bool isKillPlayer = player.Hurt(ATK);
             if (isKillPlayer) BattleEnd = true;
-            else BattleEnd = false;
-            Console.WriteLine($"{Name}의 공격!!");
+            else BattleEnd = false;            
             return BattleEnd;
         }
 
         public bool SkillAttack(Player player)
         {
             bool BattleEnd = false;
+            Console.WriteLine($"{Name}이 강력한 공격을 시전합니다.");
+            Console.WriteLine($"{Name}의 {SkillName}!!!\n");
             bool isKillPlayer = player.Hurt(SkillDamage);
             if (isKillPlayer) BattleEnd = true;
-            else BattleEnd = false;
-            Console.WriteLine($"{Name}이 강력한 공격을 시전합니다.");
-            Console.WriteLine($"{Name}의 {SkillName}!!!");
+            else BattleEnd = false;            
             return BattleEnd;
         }
 

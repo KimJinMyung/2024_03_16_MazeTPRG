@@ -14,12 +14,14 @@ namespace MazeTPRG.Monster
         protected double HP;
         protected double ATK;
         protected double Defense;
+        protected double Speed;
         protected int GiveEXP;
         protected bool isDead = false;
 
         protected string SkillName = string.Empty;
         protected double SkillDamage;
 
+        public double GetSpeed { get { return Speed; } }
         public string GetMonsterName { get {  return Name; } }
         public double GetHP { get { return HP; } } 
 
@@ -29,9 +31,17 @@ namespace MazeTPRG.Monster
         {
             double currentHP = this.HP;
             this.HP -= (damage - (damage * Defense / 100));
-            if (this.HP <= 0) isDead = true;
-            else isDead = false;
-            Console.WriteLine($"{Name}이/가 {Math.Round(currentHP - HP,2)}의 피해를 입었습니다.");
+            if (this.HP <= 0)
+            {
+                isDead = true;
+                Console.WriteLine($"{Name}이/가 {Math.Round(currentHP - HP, 2)}의 피해를 입었습니다.\n");
+                Console.WriteLine($"{Name}이/가 처치되었습니다.\n");
+            }
+            else
+            {
+                isDead = false;
+                Console.WriteLine($"{Name}이/가 {Math.Round(currentHP - HP, 2)}의 피해를 입었습니다.\n");
+            }
             return isDead;
         }
 

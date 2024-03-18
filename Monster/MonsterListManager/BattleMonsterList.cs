@@ -34,6 +34,11 @@ namespace MazeTPRG.Monster.MonsterListManager
             return BattleMonster[index];
         }
 
+        public int Count()
+        {
+            return BattleMonster.Count;
+        }
+
         public void Remove(int index)
         {
             BattleMonster.RemoveAt(index);
@@ -43,9 +48,39 @@ namespace MazeTPRG.Monster.MonsterListManager
         {
             for (int i = 0;i < BattleMonster.Count; i++)
             {
+                Console.WriteLine("=====================");
                 Console.WriteLine($"{i + 1}번 몬스터 : {BattleMonster[i].GetMonsterName}");
-                Console.WriteLine($"HP : {Math.Round(BattleMonster[i].GetHP,2)}\n");
+                Console.WriteLine($"HP : {Math.Round(BattleMonster[i].GetHP, 2)}");
+                Console.WriteLine("=====================");
             }
         }
+
+        public bool AttackMonsters(Player player)
+        {
+            bool playerKill = false;
+            foreach (var item in BattleMonster)
+            {
+                playerKill = item.Attack(player);
+                Thread.Sleep(1500);
+                Console.WriteLine();
+                if (playerKill) { return playerKill; }
+            }            
+            return playerKill;
+        }
+
+        List<Monster> list = new List<Monster>();
+        public void SpeedSort()
+        {
+            list = BattleMonster.OrderByDescending(x => x.GetSpeed).ToList();
+        }
+
+        public List<Monster> GetSortMonster
+        {
+            get 
+            {
+                return list;
+            }            
+        }        
+
     }
 }

@@ -14,6 +14,16 @@ namespace MazeTPRG
             //플레이어 선언
             Player player = Player.Instance;
 
+            //Console.WriteLine("sdfsddsfsdfdfssfsfsfd");
+            //for(int i = 0; i < 10; i++)
+            //{
+            //    Console.SetCursorPosition(10, 10 + i);
+            //    Console.WriteLine("sdfsddsfsdfdfssfsfsfd");
+            //}
+            //Console.SetCursorPosition(10, 10);
+            //Console.WriteLine("sdfsddsfsdfdfssfsfsfd");
+            //Console.ReadKey(true);
+
             ////아이템 줍기
             //player.AddItem(new ShortSword(), 2);
             //player.AddItem(new LeatherHat(), 1);
@@ -51,22 +61,24 @@ namespace MazeTPRG
             ////장비창 출력
             //player.PrintPlayerEquipInventory();
 
-            //배틀할 몬스터 리스트 선언
-            BattleMonsterList battleMonsterList = new BattleMonsterList();  
+            ////배틀할 몬스터 리스트 선언
+            //BattleMonsterList battleMonsterList = new BattleMonsterList();  
 
-            //아래의 몬스터와 배틀
-            player.BattleMonster(battleMonsterList);
+            ////아래의 몬스터와 배틀
+            //player.BattleMonster(battleMonsterList);
 
-            //배틀할 몬스터의 리스트 출력
-            battleMonsterList.PrintBattleMonsterList();
+            ////배틀할 몬스터의 리스트 출력
+            //battleMonsterList.PrintBattleMonsterList();
 
-            //공격할 몬스터의 번호 지정
-            int input = int.Parse(Console.ReadLine());
-            player.Attack(input);
-            Console.WriteLine();
+            ////공격할 몬스터의 번호 지정
+            //int input = int.Parse(Console.ReadLine());
+            //player.Attack(input);
+            //Console.WriteLine();
 
-            //배틀할 몬스터의 리스트 출력
-            battleMonsterList.PrintBattleMonsterList();
+            ////배틀할 몬스터의 리스트 출력
+            //battleMonsterList.PrintBattleMonsterList();
+
+            Battle.Battle battle = new Battle.Battle();
         }
     }
 }

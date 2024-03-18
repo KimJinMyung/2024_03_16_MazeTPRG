@@ -20,7 +20,7 @@ namespace MazeTPRG.Inventory
 
         //아이템 줍기
         public void PickUpItem(itemClass item, int count)
-        {
+        {            
             //주운 아이템의 이름과 동일한 아이템이 인벤토리에 있으면
             foreach (var item1 in itemInventoryDic)
             {

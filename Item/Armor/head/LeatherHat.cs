@@ -13,7 +13,7 @@ namespace MazeTPRG.Item.Armor.head
         public LeatherHat()
         {
             this.name = "가죽 모자";
-            this.EffectValue = 1;
+            this.EffectValue = 3;
         }
         public void Equip()
         {

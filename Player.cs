@@ -1,5 +1,7 @@
-﻿using MazeTPRG.Inventory;
+﻿using MazeTPRG.Battle;
+using MazeTPRG.Inventory;
 using MazeTPRG.Item;
+using MazeTPRG.Item.Potion;
 using MazeTPRG.Monster;
 using MazeTPRG.Monster.MonsterListManager;
 using System;
@@ -8,6 +10,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace MazeTPRG
 {
@@ -20,12 +23,15 @@ namespace MazeTPRG
         private double MaxMP;
         private double ATK;
         private double defense;
+        private double Speed;
         private bool isDead;
         private int Level;
         private int currentEXP;
         private int maxEXP;
 
         private Random random;
+
+        public double GetSpeed { get { return Speed; } }
 
         //아이템 인벤토리 
         private Inventory.Inventory itemInventory;
@@ -60,8 +66,9 @@ namespace MazeTPRG
             currentHP = MaxHP;
             MaxMP = 100;
             currentMP = MaxMP;
-            ATK = 5;
+            ATK = 50;
             defense = 2;
+            Speed = 3;
             isDead = false;
             Level = 1;
             currentEXP = 0;
@@ -73,8 +80,11 @@ namespace MazeTPRG
             itemInventory = new Inventory.Inventory();
             equipInventory = new Inventory.EquipInventory();
 
+            //배틀할 몬스터 리스트 정의
+            battleMonsterList = new BattleMonsterList();
 
-            battleMonsterList = new BattleMonsterList(); 
+            itemInventory.PickUpItem(new HealingPotion(), 3);
+            itemInventory.PickUpItem(new ManaPotion(), 2);
         }
 
         //MaxEXP 설정
@@ -149,23 +159,35 @@ namespace MazeTPRG
             else HealHP((MaxHP - currentMaxHP) / 2);
         }
 
+        public void SpeedUp(int EffectValue)
+        {
+            this.Speed += EffectValue;
+        }
+
         #endregion
 
         #region item
 
         public void AddItem(itemClass item, int count)
         {
-            itemInventory.PickUpItem(item, count);
+            Console.WriteLine($"{name}이/가 {item.GetName}을 획득하였습니다.");
+            itemInventory.PickUpItem(item, count);            
         }
 
-        public void UseItem(string name)
+        public bool UseItem(string name)
         {
             bool UsedOrEquiped = itemInventory.UseItem(name);
             //입력한 아이템(의 이름)이 인벤토리에 없어도 장착한 장비 인벤토리에는 있을 수 있다.
             if (!UsedOrEquiped)
             {
-                equipInventory.Remove(name);
+                if (equipInventory.Remove(name)) return true;
+                else 
+                {
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    return false; 
+                }
             }
+            else return true;
         }
 
         //장비 장착, 부위별로 장착할 수 있다.
@@ -200,32 +222,70 @@ namespace MazeTPRG
         //피격
         public bool Hurt(double damage)
         {
+            double currentHealth = this.currentHP;
             this.currentHP -= (damage - (damage * defense/100));
-            if (this.currentHP <= 0) isDead = true;
+            if (this.currentHP <= 0) 
+            { 
+                isDead = true;
+                Console.WriteLine($"{name}이/가 힘을 다하여 쓰러졌습니다...\n");
+            }
             else isDead = false;
+            Console.WriteLine($"{name}이/가 {Math.Round(currentHealth - currentHP, 2)}의 피해를 입었습니다.\n");
             //죽으면 true, 살았으면 flase를 반환
             return isDead;
         }        
 
         //공격
         public bool Attack(int index)
-        {            
-            bool BattleEnd = false;
-            int AttackDamage1 = random.Next((int)ATK - 2, (int)ATK + 2);
-            double AttackDamage2 = random.NextDouble() + AttackDamage1;
-
-            Console.WriteLine($"플레이어 {this.name}의 공격");
-
-            bool isKillMonster = battleMonsterList.GetBattleMonster(index-1).Hurt(AttackDamage2);
-            if (isKillMonster)
+        {
+            //지정한 몬스터가 없어 공격 실패
+            if (index > battleMonsterList.Count())
             {
-                battleMonsterList.Remove(index);
-                this.currentEXP += battleMonsterList.GetBattleMonster(index).GetGiveEXP;
-                LevelUp();
-                BattleEnd = true;
-            }else BattleEnd = false;
+                Console.WriteLine("잘못된 입력입니다.");
+                return false;
+            }
 
-            return BattleEnd;
+            int CriticalPercentage = random.Next(0, 100);
+            if(CriticalPercentage <= 10 + Speed) 
+            {
+                //치명타 공격
+                #region 치명타 공격
+                double AttackDamage1 = random.Next((int)ATK - 2, (int)ATK + 2)*1.5;
+                double AttackDamage2 = random.NextDouble() + (AttackDamage1+(AttackDamage1*Speed/100));
+
+                Console.WriteLine($"플레이어 {this.name}의 치명타 공격!!");
+
+                bool isKillMonster = battleMonsterList.GetBattleMonster(index - 1).Hurt(AttackDamage2);
+                if (isKillMonster)
+                {
+                    this.currentEXP += battleMonsterList.GetBattleMonster(index - 1).GetGiveEXP;
+                    battleMonsterList.Remove(index - 1);
+                    battleMonsterList.SpeedSort();
+                    LevelUp(); ;
+                }
+                #endregion
+            }
+            else
+            {
+                //일반 공격
+                #region 일반 공격
+                int AttackDamage1 = random.Next((int)ATK - 2, (int)ATK + 2);
+                double AttackDamage2 = random.NextDouble() + AttackDamage1;
+
+                Console.WriteLine($"플레이어 {this.name}의 일반 공격");
+
+                bool isKillMonster = battleMonsterList.GetBattleMonster(index - 1).Hurt(AttackDamage2);
+                if (isKillMonster)
+                {
+                    this.currentEXP += battleMonsterList.GetBattleMonster(index - 1).GetGiveEXP;
+                    battleMonsterList.Remove(index - 1);
+                    battleMonsterList.SpeedSort();
+                    LevelUp(); ;
+                }
+                #endregion
+            }            
+            //공격 성공
+            return true;
         }
 
         //도망
@@ -240,19 +300,31 @@ namespace MazeTPRG
         }
 
 
-        #endregion
+        #endregion               
 
         #region 출력
+
+        public void PrintBattlePlayerInfo()
+        {
+            Console.WriteLine();
+            Console.WriteLine("=====================");
+            Console.WriteLine($"    {name}의 상태");
+            Console.WriteLine("=====================");
+            Console.WriteLine($"HP : {Math.Round(currentHP,2)}"); 
+            Console.WriteLine($"MP : {Math.Round(currentMP,2)}");
+            Console.WriteLine("=====================");
+        }
+
         //플레이어의 상태 출력
         public void PrintPlayerInfo()
         {
             Console.WriteLine("=====================");
             Console.WriteLine($"    {name}의 상태창 ");
             Console.WriteLine("=====================");
-            Console.WriteLine($"HP : {currentHP}");
-            Console.WriteLine($"MP : {currentMP}");
-            Console.WriteLine($"공격력 : {ATK}");
-            Console.WriteLine($"방어력 : {defense}");
+            Console.WriteLine($"HP : {Math.Round(currentHP, 2)}");
+            Console.WriteLine($"MP : {Math.Round(currentMP, 2)}");
+            Console.WriteLine($"공격력 : {Math.Round(ATK, 2)}");
+            Console.WriteLine($"방어력 : {Math.Round(defense, 2)}");
             Console.WriteLine("=====================");
         }
 
