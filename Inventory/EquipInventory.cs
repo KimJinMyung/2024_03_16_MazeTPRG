@@ -54,7 +54,7 @@ namespace MazeTPRG.Inventory
             }
         }
         //동일한 아이템이 사용되면
-        public void Remove(string name)
+        public bool Remove(string name)
         {
             foreach (var item in equipedInventory)
             {
@@ -66,8 +66,12 @@ namespace MazeTPRG.Inventory
                     //Player.Instance.AddItem(equipedInventory[item.Key], 1);
                     ////해당 부위에 아이템이 있다면 제거
                     //equipedInventory.Remove(item.Key);
+                    
+                    //실행에 성공하였나?
+                    return true;
                 }
             }
+            return false;
         }
 
 

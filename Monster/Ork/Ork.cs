@@ -15,6 +15,7 @@ namespace MazeTPRG.Monster.Ork
             HP = 150;
             ATK = 20;
             Defense = 5;
+            Speed = 1;
             GiveEXP = 20;
 
             SkillName = "내려찍기";
@@ -29,21 +30,21 @@ namespace MazeTPRG.Monster.Ork
         public bool CommonAttack(Player player)
         {
             bool BattleEnd = false;
+            Console.WriteLine($"{Name}의 공격!!\n");
             bool isKillPlayer = player.Hurt(ATK);
             if (isKillPlayer) BattleEnd = true;
             else BattleEnd = false;
-            Console.WriteLine($"{Name}의 공격!!");
             return BattleEnd;
         }
 
         public bool SkillAttack(Player player)
         {
             bool BattleEnd = false;
+            Console.WriteLine($"{Name}이 강력한 공격을 시전합니다.");
+            Console.WriteLine($"{Name}의 {SkillName}!!!\n");
             bool isKillPlayer = player.Hurt(SkillDamage);
             if (isKillPlayer) BattleEnd = true;
             else BattleEnd = false;
-            Console.WriteLine($"{Name}이 강력한 공격을 시전합니다.");
-            Console.WriteLine($"{Name}의 {SkillName}!!!");
             return BattleEnd;
         }
 

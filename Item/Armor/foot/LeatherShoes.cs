@@ -19,14 +19,14 @@ namespace MazeTPRG.Item.Armor.foot
         {
             equiped = true;
             Player.Instance.Equip(this.parts, this);
-            Player.Instance.ArmorDefense(EffectValue);
+            Player.Instance.SpeedUp(EffectValue);
         }
 
         public void UnEquip()
         {
             equiped = false;
             Player.Instance.UnEquip(this.parts);
-            Player.Instance.ArmorDefense(-EffectValue);
+            Player.Instance.SpeedUp(-EffectValue);
         }
 
         public override bool Use()

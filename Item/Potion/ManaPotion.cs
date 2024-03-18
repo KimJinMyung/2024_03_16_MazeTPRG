@@ -11,7 +11,7 @@ namespace MazeTPRG.Item.Potion
         public ManaPotion()
         {
             this.name = "푸른 포션";
-            this.EffectValue = 30;
+            this.EffectValue = 50;
         }
 
         public override bool Use()

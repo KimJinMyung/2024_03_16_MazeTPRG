@@ -11,7 +11,7 @@ namespace MazeTPRG.Item.Potion
         public HealingPotion() 
         {
             this.name = "붉은 포션";
-            this.EffectValue = 50;
+            this.EffectValue = 80;
         }
 
         public override bool Use()
