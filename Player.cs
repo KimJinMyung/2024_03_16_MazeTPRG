@@ -2,6 +2,7 @@
 using MazeTPRG.Inventory;
 using MazeTPRG.Item;
 using MazeTPRG.Item.Potion;
+using MazeTPRG.Item.Weapons;
 using MazeTPRG.Maze.MazeObject;
 using MazeTPRG.Maze.MazeObject.MazeObject;
 using MazeTPRG.Monster;
@@ -86,8 +87,10 @@ namespace MazeTPRG
             //배틀할 몬스터 리스트 정의
             battleMonsterList = new BattleMonsterList();
 
+            //초기 장비 및 인벤토리
             itemInventory.PickUpItem(new HealingPotion(), 3);
             itemInventory.PickUpItem(new ManaPotion(), 2);
+            equipInventory.Add(Parts.weapons, new ShortSword());
         }
 
         //MaxEXP 설정

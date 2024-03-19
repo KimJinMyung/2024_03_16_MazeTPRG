@@ -47,20 +47,34 @@ namespace MazeTPRG.Maze.GameManager
                     //플레이어 이동
                     ConsoleKeyInfo key = Console.ReadKey();
                     if (!playermaze.MoveObject(new InputKey().GetDirection(key.Key))) continue;
-                    //조우했는지 판별
-                    playermaze.EncounterMonster();
+                    foreach (var item in monsterPosition)
+                    {
+                        //조우했는지 판별
+                        playermaze.EncounterMonster(item);
+                        //조우했으면 반복을 종료
+                        if (playermaze.GetBattleStart) break;
+                    }
+                    
                     //턴 바꾸기
                     PlayerTurn = false;
                 }
                 else
                 {
                     //몬스터 이동
-                    foreach (var item in monsters)
+                    for (int i = 0; i < monsters.Count; i++)
                     {
-                        item.MoveObject();
+                        monsters[i].MoveObject();
+                        //움직인 몬스터의 좌표를 monsterPosition에 반영
+                        monsterPosition[i] = monsters[i].GetMonsterPosition();
                     }
-                    //조우했는지 판별
-                    playermaze.EncounterMonster();
+                   
+                    foreach (var item in monsterPosition)
+                    {
+                        //조우했는지 판별
+                        playermaze.EncounterMonster(item);
+                        //조우했으면 반복을 종료
+                        if (playermaze.GetBattleStart) break;
+                    }
                     //턴바꾸기
                     PlayerTurn = true;
                 }
@@ -91,7 +105,5 @@ namespace MazeTPRG.Maze.GameManager
                 }                              
             }
         }
-
-        public 
     }
 }

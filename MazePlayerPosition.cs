@@ -10,6 +10,7 @@ namespace MazeTPRG.Maze
 { 
     internal class MazePlayerPosition
     {
+        private int[] PlayerPosition;
         protected Player Player = Player.Instance;
         private bool BattleStart = false;
         public bool GetBattleStart { get { return BattleStart; } }
@@ -18,12 +19,12 @@ namespace MazeTPRG.Maze
         public MazePlayerPosition(map map)
         {
             UpdateMazeMap(map);
-            Player.TileSpawn(map,Tile_Type.Player);            
+            Player.TileSpawn(map,Tile_Type.Player);
+            PlayerPosition = new int[2];
         }
 
         public bool MoveObject(Direction direction)
         {
-            EncounterMonster();
             if (BattleStart) return true;
 
             int[] ObjectPosition = Player.Move(direction);
@@ -43,13 +44,17 @@ namespace MazeTPRG.Maze
             this.maze = map;
         }
 
-        public void EncounterMonster()
+        public void EncounterMonster(int[] position)
         {
-            bool turm1 = maze.GetTile[Player.GetPosX - 1, Player.GetPosY] == Tile_Type.Monster;
-            bool turm2 = maze.GetTile[Player.GetPosX + 1, Player.GetPosY] == Tile_Type.Monster;
-            bool turm3 = maze.GetTile[Player.GetPosX, Player.GetPosY + 1] == Tile_Type.Monster;
-            bool turm4 = maze.GetTile[Player.GetPosX, Player.GetPosY - 1] == Tile_Type.Monster;
-            bool turm5 = maze.GetTile[Player.GetPosX, Player.GetPosY] == Tile_Type.Monster;
+            PlayerPosition[0] = Player.GetPosX;
+            PlayerPosition[1] = Player.GetPosY;
+
+            bool turm1 = PlayerPosition[0] - 1 == position[0] && PlayerPosition[1] == position[1];            
+            bool turm2 = PlayerPosition[0] + 1 == position[0] && PlayerPosition[1] == position[1];            
+            bool turm3 = PlayerPosition[0] == position[0] && PlayerPosition[1] == position[1]+1;        
+            bool turm4 = PlayerPosition[0] == position[0] && PlayerPosition[1] == position[1]-1;                
+            bool turm5 = PlayerPosition[0] == position[0] && PlayerPosition[1] == position[1];
+            
             if (turm1 || turm2 || turm3 || turm4 || turm5) 
             { 
                 BattleStart = true;                

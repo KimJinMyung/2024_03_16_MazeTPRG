@@ -153,6 +153,7 @@ namespace MazeTPRG.Battle
                         PlayerSurvive = false;
                         break;
                     }
+                    Thread.Sleep(1500);
 
                     //공격을 받은 플레이어의 체력 출력
                     player.PrintBattlePlayerInfo();
@@ -175,6 +176,9 @@ namespace MazeTPRG.Battle
                         if (ItemList.GetItem(getItemIndex) != default) player.AddItem(ItemList.GetItem(getItemIndex), 1);
                         else Console.WriteLine("아무것도 가지지 못했다.");
                     }
+
+                    Thread.Sleep(2000);
+
                     PlayerSurvive = true;
                     break; 
                 }                                 
