@@ -2,6 +2,8 @@
 using MazeTPRG.Inventory;
 using MazeTPRG.Item;
 using MazeTPRG.Item.Potion;
+using MazeTPRG.Maze.MazeObject;
+using MazeTPRG.Maze.MazeObject.MazeObject;
 using MazeTPRG.Monster;
 using MazeTPRG.Monster.MonsterListManager;
 using System;
@@ -14,7 +16,7 @@ using System.Xml.Linq;
 
 namespace MazeTPRG
 {
-    internal class Player
+    internal class Player : MazeObject
     {
         private string name;
         private double currentHP;
@@ -27,10 +29,11 @@ namespace MazeTPRG
         private bool isDead;
         private int Level;
         private int currentEXP;
-        private int maxEXP;
+        private int maxEXP;        
 
         private Random random;
 
+        public string GetName {  get { return name; } }
         public double GetSpeed { get { return Speed; } }
 
         //아이템 인벤토리 
@@ -300,7 +303,7 @@ namespace MazeTPRG
         }
 
 
-        #endregion               
+        #endregion        
 
         #region 출력
 

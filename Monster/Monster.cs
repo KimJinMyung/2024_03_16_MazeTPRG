@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MazeTPRG.Maze.MazeObject;
+using MazeTPRG.Maze.MazeObject.MazeObject;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MazeTPRG.Monster
 {
-    internal abstract class Monster : IMonsterAction
+    internal abstract class Monster : MazeObject, IMonsterAction
     {
         protected string Name = string.Empty;
         protected double HP;
@@ -44,9 +46,10 @@ namespace MazeTPRG.Monster
             }
             return isDead;
         }
-
+        //몬스터 객체 클론 생성
         public abstract Monster Clone();
-
-        public abstract bool Attack(Player player);
+        //몬스터의 공격
+        public abstract bool Attack(Player player);        
+       
     }
 }
