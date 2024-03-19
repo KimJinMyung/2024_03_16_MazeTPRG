@@ -14,10 +14,14 @@ namespace MazeTPRG.Battle
         private BattleMonsterList BattleMonsterList;
         private SelectAction selectAction;
         private ItemList ItemList;
+        private bool PlayerSurvive;
+        public bool GetPlayerSurvive { get { return PlayerSurvive; } }
         //플레이어 턴까지 남은 수
         private int TurnCount;
         //공격하는 몬스터의 index
         private int AttackMonsterIndex;
+        //진행되는 턴의 수
+        private int playingTurnCount=0;
 
         //배틀 종료 조건
         //배틀 몬스터 리스트의 모든 몬스터 제거
@@ -25,6 +29,8 @@ namespace MazeTPRG.Battle
         //플레이어 도망 성공
         public Battle()
         {
+            PlayerSurvive = false;
+
             //배틀 몬스터 생성
             BattleMonsterList = new BattleMonsterList();
 
@@ -33,10 +39,13 @@ namespace MazeTPRG.Battle
             int BattleMonsterCount = BattleMonsterList.Count();
 
             //랜덤 선공권 결정
-            //RandomFirstTurnDecide();
+            //RandomFirstTurnDecide();            
 
             //스피드 선공권 결정
             SpeedFirstTurnDecide();
+
+            //스피드 비교 출력
+            PrintCompareSpeed();
 
             //공격하는 몬스터의 인덱스 초기화
             AttackMonsterIndex = 0;
@@ -45,6 +54,10 @@ namespace MazeTPRG.Battle
             while (true)
             {
                 Console.Clear();
+                playingTurnCount++;
+                Console.WriteLine("=====================");
+                Console.WriteLine($"    {playingTurnCount}번째 턴!!");
+                Console.WriteLine("=====================");
 
                 //배틀할 몬스터의 리스트 출력
                 BattleMonsterList.PrintBattleMonsterList();
@@ -115,6 +128,7 @@ namespace MazeTPRG.Battle
                     if (selectAction.GetBattleEnd != null)
                     {
                         //플레이어 도망 성공 시 배틀 종료
+                        PlayerSurvive = true;
                         if (selectAction.GetBattleEnd) break;
                     }
                     //도망이 아닌 다른 선택지를 고른 경우
@@ -134,7 +148,11 @@ namespace MazeTPRG.Battle
                 {
                     //스피드가 가장 빠른 순서대로 공격                    
                     bool playerDead = BattleMonsterList.GetSortMonster[AttackMonsterIndex].Attack(player);
-                    if (playerDead) break;
+                    if (playerDead)
+                    {
+                        PlayerSurvive = false;
+                        break;
+                    }
 
                     //공격을 받은 플레이어의 체력 출력
                     player.PrintBattlePlayerInfo();
@@ -157,6 +175,7 @@ namespace MazeTPRG.Battle
                         if (ItemList.GetItem(getItemIndex) != default) player.AddItem(ItemList.GetItem(getItemIndex), 1);
                         else Console.WriteLine("아무것도 가지지 못했다.");
                     }
+                    PlayerSurvive = true;
                     break; 
                 }                                 
             }                
@@ -178,6 +197,42 @@ namespace MazeTPRG.Battle
             {
                 if (player.GetSpeed < item.GetSpeed) TurnCount++;
             }
+        }
+
+        public void PrintCompareSpeed()
+        {
+            Console.Clear();
+            for (int i = 0; i < BattleMonsterList.Count(); i++)
+            {
+                Console.WriteLine("==================================");
+                Console.WriteLine($"{i + 1}번 몬스터 {BattleMonsterList.GetBattleMonster(i).GetMonsterName}의 속도 : {BattleMonsterList.GetBattleMonster(i).GetSpeed}");
+                Console.WriteLine("==================================");
+            }
+            Console.WriteLine("\n==================================");
+            Console.WriteLine($"{player.GetName}의 속도 : {player.GetSpeed}");
+            Console.WriteLine("==================================");
+
+            Thread.Sleep(1500);
+            Console.WriteLine();
+            Console.WriteLine("공격 순서는 아래와 같습니다.\n");
+            
+            int monsterIndex = 0;
+            for (int i = 0;i < BattleMonsterList.Count()+1; i++)
+            {
+                if (i == TurnCount) 
+                {
+                    Console.WriteLine("\n=================");
+                    Console.WriteLine($"{i + 1}번째 {player.GetName}");
+                    Console.WriteLine("=================");
+                    continue;
+                }
+                Console.WriteLine("\n=================");
+                Console.WriteLine($"{i+1}번째 {BattleMonsterList.GetSortMonster[monsterIndex].GetMonsterName}");
+                Console.WriteLine("=================");
+                monsterIndex++;
+            }
+            
+            Thread.Sleep(1500);
         }
 
     }

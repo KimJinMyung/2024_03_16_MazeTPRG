@@ -3,6 +3,8 @@ using MazeTPRG.Item.Armor.foot;
 using MazeTPRG.Item.Armor.head;
 using MazeTPRG.Item.Potion;
 using MazeTPRG.Item.Weapons;
+using MazeTPRG.Maze;
+using MazeTPRG.Maze.GameManager;
 using MazeTPRG.Monster.MonsterListManager;
 
 namespace MazeTPRG
@@ -14,6 +16,12 @@ namespace MazeTPRG
             //플레이어 선언
             Player player = Player.Instance;
 
+            //for(int i = 0; i < 18; i++)
+            //{
+            //    Console.SetCursorPosition(10, 3 + i);
+            //    Console.Write("sdadadasdasasda");
+            //}
+            //Console.ReadKey();
             //Console.WriteLine("sdfsddsfsdfdfssfsfsfd");
             //for(int i = 0; i < 10; i++)
             //{
@@ -77,8 +85,11 @@ namespace MazeTPRG
 
             ////배틀할 몬스터의 리스트 출력
             //battleMonsterList.PrintBattleMonsterList();
+                        
+            MazeGameManager mazeGame = new MazeGameManager(15,15);
 
-            Battle.Battle battle = new Battle.Battle();
+            //배틀 시작
+            //Battle.Battle battle = new Battle.Battle();
         }
     }
 }
