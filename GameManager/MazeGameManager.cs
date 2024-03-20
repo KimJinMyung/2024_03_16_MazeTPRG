@@ -178,6 +178,9 @@ namespace MazeTPRG.GameManager
                             //발견했다면
                             if (item.EncountItemBox())
                             {
+                                //맵 출력 업데이트
+                                map.Render();
+
                                 //얻을 아이템의 인덱스 랜덤 산출
                                 int getItemIndex = new Random().Next(ItemList.GetLength);
 
