@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MazeTPRG.Monster.Slime;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,12 +18,20 @@ namespace MazeTPRG.Item.Weapons
             //파츠
             this.Parts = Inventory.Parts.weapons;
         }
+        public override itemClass Clone()
+        {
+            return new ShortSword();
+        }
 
-        public void Equip()
+        public bool Equip()
         {
             equiped = true;
-            Player.Instance.Equip(this.Parts, this);
-            Player.Instance.WeaponsATK(EffectValue);
+            if (Player.Instance.Equip(this.Parts, this))
+            {
+                Player.Instance.WeaponsATK(EffectValue);
+                return true;
+            }
+            return false;
         }
 
         public void UnEquip()
@@ -35,9 +44,9 @@ namespace MazeTPRG.Item.Weapons
         public override bool Use()
         {
             if (!equiped)
-            {                
-                Equip();                 
-                return true;
+            {
+                if (Equip()) return true;
+                else return false;
             }
             else
             {

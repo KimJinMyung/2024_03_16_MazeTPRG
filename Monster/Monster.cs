@@ -37,7 +37,8 @@ namespace MazeTPRG.Monster
             {
                 isDead = true;
                 Console.WriteLine($"{Name}이/가 {Math.Round(currentHP - HP, 2)}의 피해를 입었습니다.\n");
-                Console.WriteLine($"{Name}이/가 처치되었습니다.\n");
+                Console.WriteLine($"{Name}이/가 처치되었습니다.");
+                Console.WriteLine($"{GiveEXP}의 경험치를 획득합니다.\n");
             }
             else
             {

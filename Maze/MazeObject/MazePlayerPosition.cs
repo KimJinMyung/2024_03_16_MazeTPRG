@@ -4,22 +4,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MazeTPRG.Maze.MazeObject.MazeObject;
-using MazeTPRG.Maze.MazeObject;
 
-namespace MazeTPRG.Maze
-{ 
+namespace MazeTPRG.Maze.MazeObject
+{
     internal class MazePlayerPosition
     {
         private int[] PlayerPosition;
         protected Player Player = Player.Instance;
         private bool BattleStart = false;
         public bool GetBattleStart { get { return BattleStart; } }
-        private map maze;
+        public bool SetBattleStart { set { BattleStart = value; } }
+        private Map maze;
 
-        public MazePlayerPosition(map map)
+        public MazePlayerPosition(Map map)
         {
             UpdateMazeMap(map);
-            Player.TileSpawn(map,Tile_Type.Player);
+            Player.TileSpawn(map, Tile_Type.Player);
             PlayerPosition = new int[2];
         }
 
@@ -28,38 +28,42 @@ namespace MazeTPRG.Maze
             if (BattleStart) return true;
 
             int[] ObjectPosition = Player.Move(direction);
-            bool isNotWall = maze.GetTile[ObjectPosition[0], ObjectPosition[1]]!=Tile_Type.Wall;           
-
+            bool isNotWall = maze.GetTile[ObjectPosition[0], ObjectPosition[1]] != Tile_Type.Wall;
+            if (ObjectPosition[0] == Player.GetPosX && ObjectPosition[1] ==Player.GetPosY) { return false; }
             if (isNotWall)
             {
                 maze.SetTileType(Player.GetPosX, Player.GetPosY, Tile_Type.Road);
                 maze.SetTileType(ObjectPosition[0], ObjectPosition[1], Tile_Type.Player);
                 Player.SetPosition(ObjectPosition[0], ObjectPosition[1]);
-                return true;    
-            }else return false;
-        }        
-
-        public void UpdateMazeMap(map map)
-        {
-            this.maze = map;
+                return true;
+            }
+            else return false;
         }
 
-        public void EncounterMonster(int[] position)
+        public void UpdateMazeMap(Map map)
+        {
+            maze = map;
+        }
+
+        public int[] EncounterMonster(int[] position)
         {
             PlayerPosition[0] = Player.GetPosX;
             PlayerPosition[1] = Player.GetPosY;
 
-            bool turm1 = PlayerPosition[0] - 1 == position[0] && PlayerPosition[1] == position[1];            
-            bool turm2 = PlayerPosition[0] + 1 == position[0] && PlayerPosition[1] == position[1];            
-            bool turm3 = PlayerPosition[0] == position[0] && PlayerPosition[1] == position[1]+1;        
-            bool turm4 = PlayerPosition[0] == position[0] && PlayerPosition[1] == position[1]-1;                
+            bool turm1 = PlayerPosition[0] - 1 == position[0] && PlayerPosition[1] == position[1];
+            bool turm2 = PlayerPosition[0] + 1 == position[0] && PlayerPosition[1] == position[1];
+            bool turm3 = PlayerPosition[0] == position[0] && PlayerPosition[1] == position[1] + 1;
+            bool turm4 = PlayerPosition[0] == position[0] && PlayerPosition[1] == position[1] - 1;
             bool turm5 = PlayerPosition[0] == position[0] && PlayerPosition[1] == position[1];
-            
-            if (turm1 || turm2 || turm3 || turm4 || turm5) 
-            { 
-                BattleStart = true;                
+
+            if (turm1 || turm2 || turm3 || turm4 || turm5)
+            {
+                BattleStart = true;
+                return position;
             }
             else BattleStart = false;
+            return default;
         }
+        
     }
 }

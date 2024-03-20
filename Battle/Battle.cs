@@ -2,6 +2,7 @@
 using MazeTPRG.Monster.MonsterListManager;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,10 +37,7 @@ namespace MazeTPRG.Battle
 
             //입력받은 몬스터들과 배틀 시작
             player.BattleMonster(BattleMonsterList);
-            int BattleMonsterCount = BattleMonsterList.Count();
-
-            //랜덤 선공권 결정
-            //RandomFirstTurnDecide();            
+            int BattleMonsterCount = BattleMonsterList.Count();           
 
             //스피드 선공권 결정
             SpeedFirstTurnDecide();
@@ -58,12 +56,7 @@ namespace MazeTPRG.Battle
                 Console.WriteLine("=====================");
                 Console.WriteLine($"    {playingTurnCount}번째 턴!!");
                 Console.WriteLine("=====================");
-
-                //배틀할 몬스터의 리스트 출력
-                BattleMonsterList.PrintBattleMonsterList();
-
-                //플레이어의 배틀 정보창 출력
-                player.PrintBattlePlayerInfo();
+               
                 //플레이어의 턴까지 남은 턴의 수 출력
                 if (TurnCount != 0) 
                 {
@@ -71,46 +64,7 @@ namespace MazeTPRG.Battle
                     Console.WriteLine($"행동까지 {TurnCount} 턴 남음");
                     Console.WriteLine("=====================");
                 }
-                Console.WriteLine();                
-
-                #region 배틀동작
-                ////플레이어의 턴
-                //if (playerTurn)
-                //{                    
-                //    //플레이어의 선택지 생성
-                //    selectAction = new SelectAction();
-                //    bool PlayerTurnEnd = selectAction.Select();
-                //    if (!PlayerTurnEnd) { continue; }
-                //    else { playerTurn = false; }
-
-                //    //도망을 선택한 경우
-                //    if (selectAction.GetBattleEnd != null)
-                //    {
-                //        //플레이어 도망 성공 시 배틀 종료
-                //        if (selectAction.GetBattleEnd) break;
-                //    }
-                //    //도망이 아닌 다른 선택지를 고른 경우
-                //    else
-                //    {
-                //        //플레이어의 동작 이후 몬스터들의 정보 출력
-                //        BattleMonsterList.PrintBattleMonsterList();
-                //    }                                  
-                //    Thread.Sleep(2000);
-                //}
-                ////몬스터들의 턴
-                //else
-                //{
-                //    bool playerDead = BattleMonsterList.AttackMonsters(player);
-
-                //    //플레이어가 사망하였을 경우, 배틀 종료
-                //    if(playerDead) break;
-                //    else { playerTurn = true; }
-
-                //    //공격을 받은 플레이어의 체력 출력
-                //    player.PrintBattlePlayerInfo();
-                //    Thread.Sleep(2000);
-                //}
-                #endregion
+                Console.WriteLine();             
 
                 //몬스터의 인덱스가 배틀 몬스터 리스트의 수보다 같거나크면
                 //다시 0에서부터 시작.
@@ -119,13 +73,23 @@ namespace MazeTPRG.Battle
                 //플레이어 턴
                 if(TurnCount <= 0)
                 {
+                    //배틀할 몬스터의 리스트 출력
+                    BattleMonsterList.PrintBattleMonsterList();
+
+                    //플레이어의 배틀 정보창 출력
+                    player.PrintBattlePlayerInfo();
+
                     //플레이어의 선택지 생성
                     selectAction = new SelectAction();
                     bool PlayerTurnEnd = selectAction.Select();
-                    if (!PlayerTurnEnd) { continue; }
+                    if (!PlayerTurnEnd) 
+                    {
+                        playingTurnCount--;
+                        continue;
+                    }
                     
                     //도망을 선택한 경우
-                    if (selectAction.GetBattleEnd != null)
+                    if (selectAction.GetBattleEnd == true)
                     {
                         //플레이어 도망 성공 시 배틀 종료
                         PlayerSurvive = true;
@@ -168,13 +132,24 @@ namespace MazeTPRG.Battle
                 //배틀 몬스터가 모두 처치되었을 경우, 배틀 종료
                 if (BattleMonsterList.Count() <= 0)
                 { 
+                    //전리품 리스트 선언
                     ItemList = new ItemList();
-                                        
-                    for (int i = 0; i <= new Random().Next(BattleMonsterCount); i++)
+
+                    //전리품 획득 확률
+                    int MaxLoopCount;
+
+                    //여러개 얻을 확률
+                    int random = new Random().Next(100);
+                    if (random < 70) MaxLoopCount = 0;
+                    if (random < 85) MaxLoopCount = 1;
+                    else if (random < 90) MaxLoopCount = 2;
+                    else MaxLoopCount = 3;                    
+
+                    for (int i = 0; i <= MaxLoopCount; i++)
                     {
                         int getItemIndex = new Random().Next(ItemList.GetLength);
-                        if (ItemList.GetItem(getItemIndex) != default) player.AddItem(ItemList.GetItem(getItemIndex), 1);
-                        else Console.WriteLine("아무것도 가지지 못했다.");
+                        if (ItemList.GetItem(getItemIndex) != default) 
+                            player.AddItem(ItemList.GetItem(getItemIndex), 1);                        
                     }
 
                     Thread.Sleep(2000);
@@ -184,14 +159,6 @@ namespace MazeTPRG.Battle
                 }                                 
             }                
         }
-
-        //랜덤 우선권
-        //public void RandomFirstTurnDecide()
-        //{
-        //    int selectTurn = new Random().Next(2);
-        //    if (selectTurn > 0) { playerTurn = true; }
-        //    else {  playerTurn = false; }
-        //}
 
         //스피드 우선권        
         public void SpeedFirstTurnDecide()

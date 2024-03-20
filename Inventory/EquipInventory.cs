@@ -26,17 +26,21 @@ namespace MazeTPRG.Inventory
         }
         
         //추가할 아이템을 입력받으면
-        public void Add(Parts parts, itemClass item)
+        public bool Add(Parts parts, itemClass item)
         {
             //해당 아이템의 parts가 비어있는지 확인
             if (equipedInventory.ContainsKey(parts))
             {
+                Console.WriteLine();
                 Console.WriteLine("이미 착용한 무기가 있습니다.");
+                //Thread.Sleep(1000);
+                return false;
             }
             //비어있으면 장착
             else
             {
                 equipedInventory.Add(parts, item);
+                return true;
             }
             
         }

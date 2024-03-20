@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MazeTPRG.Item.Weapons;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,11 @@ namespace MazeTPRG.Item.Potion
         {
             this.name = "푸른 포션";
             this.EffectValue = 50;
+        }
+
+        public override itemClass Clone()
+        {
+            return new ManaPotion();
         }
 
         public override bool Use()

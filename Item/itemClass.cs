@@ -21,5 +21,8 @@ namespace MazeTPRG.Item
         public string GetName {  get { return name; } }
 
         public abstract bool Use();
+
+        //아이템 객체 클론 생성
+        public abstract itemClass Clone();
     }
 }

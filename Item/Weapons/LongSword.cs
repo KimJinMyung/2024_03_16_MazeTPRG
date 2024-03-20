@@ -18,11 +18,20 @@ namespace MazeTPRG.Item.Weapons
             this.Parts = Inventory.Parts.weapons;
         }
 
-        public void Equip()
+        public override itemClass Clone()
         {
-            equiped = true;
-            Player.Instance.Equip(this.Parts, this);
-            Player.Instance.WeaponsATK(EffectValue);
+            return new LongSword();
+        }
+
+        public bool Equip()
+        {            
+            if(Player.Instance.Equip(this.Parts, this))
+            {
+                equiped = true;
+                Player.Instance.WeaponsATK(EffectValue);
+                return true;
+            }
+            return false;
         }
 
         public void UnEquip()
@@ -36,8 +45,8 @@ namespace MazeTPRG.Item.Weapons
         {
             if (!equiped)
             {
-                Equip();
-                return true;
+                if(Equip()) return true;
+                else return false;
             }
             else
             {

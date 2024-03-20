@@ -1,10 +1,10 @@
-﻿using MazeTPRG.Item.Armor.body;
+﻿using MazeTPRG.GameManager;
+using MazeTPRG.Item.Armor.body;
 using MazeTPRG.Item.Armor.foot;
 using MazeTPRG.Item.Armor.head;
 using MazeTPRG.Item.Potion;
 using MazeTPRG.Item.Weapons;
 using MazeTPRG.Maze;
-using MazeTPRG.Maze.GameManager;
 using MazeTPRG.Monster.MonsterListManager;
 
 namespace MazeTPRG
@@ -15,7 +15,7 @@ namespace MazeTPRG
         {
             //플레이어 선언
             Player player = Player.Instance;
-
+            player.InitItem();
             //for(int i = 0; i < 18; i++)
             //{
             //    Console.SetCursorPosition(10, 3 + i);

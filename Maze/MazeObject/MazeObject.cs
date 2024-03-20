@@ -13,7 +13,6 @@ namespace MazeTPRG.Maze.MazeObject.MazeObject
         private int tile_height;
         protected int PosX;
         protected int PosY;
-        private map maze;
 
         public int GetPosX {  get { return PosX; } }
         public int GetPosY { get {  return PosY; } }
@@ -40,7 +39,7 @@ namespace MazeTPRG.Maze.MazeObject.MazeObject
             this.PosY = y;
         }
 
-        public void TileSpawn(map map, Tile_Type type)
+        public void TileSpawn(Map map, Tile_Type type)
         {
             tile_Width = map.width;
             tile_height = map.height;

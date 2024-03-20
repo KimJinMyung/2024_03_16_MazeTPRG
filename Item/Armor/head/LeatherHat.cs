@@ -1,4 +1,5 @@
 ﻿using MazeTPRG.Item.Armor.body;
+using MazeTPRG.Item.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,20 @@ namespace MazeTPRG.Item.Armor.head
             this.name = "가죽 모자";
             this.EffectValue = 3;
         }
-        public void Equip()
+        public override itemClass Clone()
+        {
+            return new LeatherHat();
+        }
+
+        public bool Equip()
         {
             equiped = true;
-            Player.Instance.Equip(this.parts, this);
-            Player.Instance.ArmorDefense(EffectValue);
+            if (Player.Instance.Equip(this.parts, this))
+            {
+                Player.Instance.ArmorDefense(EffectValue);
+                return true;
+            }
+            return false;
         }
 
         public void UnEquip()
@@ -33,8 +43,8 @@ namespace MazeTPRG.Item.Armor.head
         {
             if (!equiped)
             {
-                Equip();
-                return true;
+                if (Equip()) return true;
+                else return false;
             }
             else
             {

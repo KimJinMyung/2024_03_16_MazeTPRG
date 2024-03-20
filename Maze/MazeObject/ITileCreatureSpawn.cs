@@ -8,6 +8,6 @@ namespace MazeTPRG.Maze.MazeObject.MazeObject
 {
     internal interface ITileCreatureSpawn
     {
-        public void TileSpawn(map map, Tile_Type type);
+        public void TileSpawn(Map map, Tile_Type type);
     }
 }

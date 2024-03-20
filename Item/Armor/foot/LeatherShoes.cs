@@ -1,4 +1,5 @@
 ﻿using MazeTPRG.Item.Armor.body;
+using MazeTPRG.Item.Weapons;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +16,19 @@ namespace MazeTPRG.Item.Armor.foot
             this.name = "가죽 신발";
             this.EffectValue = 2;
         }
-        public void Equip()
+        public override itemClass Clone()
+        {
+            return new LeatherShoes();
+        }
+        public bool Equip()
         {
             equiped = true;
-            Player.Instance.Equip(this.parts, this);
-            Player.Instance.SpeedUp(EffectValue);
+            if (Player.Instance.Equip(this.parts, this))
+            {
+                Player.Instance.SpeedUp(EffectValue);
+                return true;
+            }
+            return false;
         }
 
         public void UnEquip()
@@ -33,8 +42,8 @@ namespace MazeTPRG.Item.Armor.foot
         {
             if (!equiped)
             {
-                Equip();
-                return true;
+                if (Equip()) return true;
+                else return false;
             }
             else
             {

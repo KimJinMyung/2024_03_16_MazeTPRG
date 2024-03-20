@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MazeTPRG.Inventory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace MazeTPRG.Battle
         Player Player;
         public Dictionary<PlayerAction, Action> Actions;
         private bool runSucccess;
+        private InventoryWindow inventoryWindow;
 
         public bool GetBattleEnd
         { 
@@ -28,6 +30,7 @@ namespace MazeTPRG.Battle
             Player = Player.Instance;
             Actions = new Dictionary<PlayerAction, Action>();
             runSucccess = false;
+            inventoryWindow = new InventoryWindow();
         }
 
         public bool Select()
@@ -43,6 +46,7 @@ namespace MazeTPRG.Battle
             Console.Write("행동을 선택하세요. : ");
             try
             {
+                //중요하다
                 //ReadLine에 남아있는 것을 전부 비워라
                 while(Console.KeyAvailable) {Console.ReadKey(true);}
 
@@ -74,22 +78,7 @@ namespace MazeTPRG.Battle
                     return turnEnd;
 
                 case (int)PlayerAction.UseItem:
-                    Console.Clear();
-                    //플레이어 상세 정보창 출력
-                    Player.PrintPlayerInfo();
-                    Console.WriteLine();
-                    //플레이어 장비 정보창 출력
-                    Player.PrintPlayerEquipInventory();
-                    Console.WriteLine();
-                    //플레이어 인벤토리 출력
-                    Player.PrintPlayerInventory();
-                    Console.WriteLine();
-
-                    Console.Write("사용 및 착용 해제할 아이템의 이름을 입력 : ");
-                    string inputItemName = Console.ReadLine();
-                    turnEnd = Player.UseItem(inputItemName);
-
-                    if(turnEnd) Player.PrintPlayerInfo();                    
+                    turnEnd = inventoryWindow.PirntInventoryWindow();                    
                     Thread.Sleep(1500);                    
                     return turnEnd;
 

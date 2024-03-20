@@ -86,11 +86,16 @@ namespace MazeTPRG
 
             //배틀할 몬스터 리스트 정의
             battleMonsterList = new BattleMonsterList();
+        }
 
+        public void InitItem()
+        {
             //초기 장비 및 인벤토리
             itemInventory.PickUpItem(new HealingPotion(), 3);
             itemInventory.PickUpItem(new ManaPotion(), 2);
-            equipInventory.Add(Parts.weapons, new ShortSword());
+            itemInventory.PickUpItem(new ShortSword(), 1);
+            itemInventory.PickUpItem(new LongSword(), 1);
+            UseItem("낡은 단검");
         }
 
         //MaxEXP 설정
@@ -131,6 +136,24 @@ namespace MazeTPRG
 
                 currentEXP -= maxEXP;
                 UpdateMaxEXP(Level);
+                
+                Console.WriteLine("레벨 업!!!\n");                
+
+                //최대 체력 50 증가
+                //최대 마나 30 증가
+                //공격력 0.3배씩 증가
+                //방어력 1.5 증가
+                //스피드 1 증가
+                this.MaxHP += 50;
+                this.MaxMP += 30;
+                this.ATK += (ATK * 0.3 * (Level-1));
+                this.defense += 1.5;
+                this.Speed += 1;
+
+                //모든 상태 회복
+                currentHP = MaxHP;
+                currentMP = MaxMP;
+                Console.WriteLine("모든 상태가 회복되었습니다.\n");
             }
         }
 
@@ -169,14 +192,14 @@ namespace MazeTPRG
         {
             this.Speed += EffectValue;
         }
-
+        
         #endregion
 
         #region item
 
         public void AddItem(itemClass item, int count)
         {
-            Console.WriteLine($"{name}이/가 {item.GetName}을 획득하였습니다.");
+            Console.WriteLine($"{name}이/가 {item.GetName}을 획득하였습니다.\n");
             itemInventory.PickUpItem(item, count);            
         }
 
@@ -197,9 +220,10 @@ namespace MazeTPRG
         }
 
         //장비 장착, 부위별로 장착할 수 있다.
-        public void Equip(Parts parts, itemClass item)
+        public bool Equip(Parts parts, itemClass item)
         {
-            equipInventory.Add(parts, item);
+            if (equipInventory.Add(parts, item)) return true;
+            else return false;
         }
 
         //원하는 부위의 장비를 해제
@@ -230,7 +254,7 @@ namespace MazeTPRG
         {
             double currentHealth = this.currentHP;
             this.currentHP -= (damage - (damage * defense/100));
-            if (this.currentHP <= 0) 
+            if (this.currentHP <= 0.00) 
             { 
                 isDead = true;
                 Console.WriteLine($"{name}이/가 힘을 다하여 쓰러졌습니다...\n");
@@ -315,6 +339,8 @@ namespace MazeTPRG
             Console.WriteLine();
             Console.WriteLine("=====================");
             Console.WriteLine($"    {name}의 상태");
+            Console.WriteLine("=====================");
+            Console.WriteLine($"Level : {Level}");
             Console.WriteLine("=====================");
             Console.WriteLine($"HP : {Math.Round(currentHP,2)}"); 
             Console.WriteLine($"MP : {Math.Round(currentMP,2)}");

@@ -26,7 +26,7 @@ namespace MazeTPRG.Maze
         Exit
     }
 
-    internal class map
+    internal class Map
     {
         const char Check = '■';
         private Tile_Type[,] tile;
@@ -40,7 +40,7 @@ namespace MazeTPRG.Maze
         private bool[,] visited;
         private Random rand;
 
-        public map(int width, int height)
+        public Map(int width, int height)
         {
             this.width = width;
             this.height = height;

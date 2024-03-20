@@ -15,11 +15,19 @@ namespace MazeTPRG.Item.Armor.body
             this.name = "가죽 갑옷";
             this.EffectValue = 30;
         }
-        public void Equip()
+        public override itemClass Clone()
+        {
+            return new LeatherBodyArmor();
+        }
+        public bool Equip()
         {
             equiped = true;
-            Player.Instance.Equip(this.parts, this);
-            Player.Instance.MaxHPUP(EffectValue);
+            if (Player.Instance.Equip(this.parts, this))
+            {
+                Player.Instance.MaxHPUP(EffectValue);
+                return true;
+            }
+            return false;
         }
 
         public void UnEquip()
@@ -33,8 +41,8 @@ namespace MazeTPRG.Item.Armor.body
         {
             if (!equiped)
             {
-                Equip();
-                return true;
+                if (Equip()) return true;
+                else return false;
             }
             else
             {

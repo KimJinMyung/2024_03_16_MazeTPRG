@@ -27,7 +27,7 @@ namespace MazeTPRG.Inventory
                 if(item1.Key.GetName == item.GetName)
                 {
                     //아이템의 갯수 증가 이후, 메서드 종료.
-                    itemInventoryDic[item1.Key] += count;
+                    itemInventoryDic[item1.Key] += count;                    
                     return;
                 }
             }
@@ -53,7 +53,8 @@ namespace MazeTPRG.Inventory
                         //사용한 아이템의 갯수가 0이하이면 Remove한다.
                         if (itemInventoryDic[item.Key] <= 0) { itemInventoryDic.Remove(item.Key); }
                         return true;
-                    }                            
+                    }
+                    
                 }
             }
             return false;
