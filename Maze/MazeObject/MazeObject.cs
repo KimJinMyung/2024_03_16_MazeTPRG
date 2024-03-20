@@ -47,26 +47,30 @@ namespace MazeTPRG.Maze.MazeObject.MazeObject
             while (true)
             {
                 int x = random.Next(map.width);
-                int y = random.Next(map.height);
-
-                if (x < tile_Width&& x > 0 && y < tile_height && y > 0)
-                {                  
-                    if (map.GetTile[x, y] == Tile_Type.Road)
+                int y = random.Next(map.height);                
+                
+                bool playerNear = false;
+                for(int i = x - 1; i <= x + 1 &&!playerNear; i++)
+                {
+                    for (int j = y - 1; j <= y + 1&&!playerNear; j++) 
                     {
-                        bool term1 = map.GetTile[x + 1, y] == Tile_Type.Player;
-                        if (term1) continue;
-                        bool term2 = map.GetTile[x - 1, y] == Tile_Type.Player;
-                        if (term2) continue;
-                        bool term3 = map.GetTile[x, y + 1] == Tile_Type.Player;
-                        if (term3) continue;
-                        bool term4 = map.GetTile[x, y - 1] == Tile_Type.Player;
-                        if (term4) continue;
-
-                        map.SetTileType(x, y, type);
-                        SetPosition(x, y);
-                        break;
+                        if(i == x && j == y) continue;
+                        if(i <= 0 || i >= map.width || j >= map.height || j <= 0) continue;
+                        if (map.GetTile[i, j] == Tile_Type.Player)
+                        {
+                            playerNear = true;
+                        }
                     }
-                }                                                         
+                }
+
+                if (playerNear) continue;
+
+                if (map.GetTile[x,y]==Tile_Type.Road)
+                {
+                    map.SetTileType(x,y,type);
+                    SetPosition(x,y);
+                    break;
+                }
             }
         }
     }

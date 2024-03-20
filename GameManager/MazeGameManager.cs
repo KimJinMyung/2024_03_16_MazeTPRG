@@ -55,6 +55,10 @@ namespace MazeTPRG.GameManager
 
                 map = new Map(width, height);
 
+                //플레이어 랜덤 스폰
+                MazePlayerPosition playermaze = new MazePlayerPosition(map);
+
+                //플레이어의 상,하,좌,우에 스폰되지 못하도록 설정
                 //탈출구 랜덤 스폰
                 MazeExit mazeExit = new MazeExit(map);
 
@@ -65,10 +69,7 @@ namespace MazeTPRG.GameManager
                 {                    
                     MazeItemBox itemBox = new MazeItemBox(map);
                     itemBoxes.Add(itemBox);
-                }                
-
-                //플레이어 랜덤 스폰
-                MazePlayerPosition playermaze = new MazePlayerPosition(map);
+                }                                                
 
                 //몬스터 초기화
                 monsters.Clear();
@@ -78,7 +79,7 @@ namespace MazeTPRG.GameManager
                     MazeMonster mazeMonster = new MazeMonster();
                     mazeMonster.MazeMonsterSpawn(map);
                     monsters.Add(mazeMonster);
-                }
+                }               
 
                 while (true)
                 {
@@ -137,47 +138,12 @@ namespace MazeTPRG.GameManager
                         map.Render();
                     }
 
-                    //플레이어가 아이템 박스를 발견했는지 확인
-                    foreach (var item in itemBoxes)
-                    {
-                        //발견했다면
-                        if (item.EncountItemBox())
-                        {
-                            //얻을 아이템의 인덱스 랜덤 산출
-                            int getItemIndex = new Random().Next(ItemList.GetLength);
-
-                            //아이템 출력 텍스트 위치 설정
-                            Console.SetCursorPosition(width * 2 + 3, height - 1);
-
-                            //아이템 리스트가 비어있지 않으면(꽝에 걸리지 않으면)
-                            if (ItemList.GetItem(getItemIndex) != default)
-                            {
-                                //플레이어에게 해당 아이템을 제공
-                                Player.Instance.AddItem(ItemList.GetItem(getItemIndex), 1);
-                            }
-                            else
-                            {
-                                Console.WriteLine("꽝...");
-                            }
-                            Thread.Sleep(1800);
-                            //아이템 박스 소멸
-                            map.SetTileType(item.GetPosX, item.GetPosY, Tile_Type.Road);
-                            itemBoxes.Remove(item);
-
-                            //아이템 출력 텍스트 제거
-                            Console.SetCursorPosition(width * 2 + 3, height - 1);
-                            Console.WriteLine("                                          ");
-                            break;
-                        }
-                    }
-
                     //ReadLine에 남아있는 것을 전부 비워라
                     while (Console.KeyAvailable) { Console.ReadKey(true); }
 
                     //플레이어의 차례
                     if (PlayerTurn)                    
-                    {                       
-
+                    {                      
                         //플레이어 입력
                         ConsoleKeyInfo key = Console.ReadKey();                                                                        
                         //한글로 입력하면 2번 입력해야함
@@ -202,7 +168,43 @@ namespace MazeTPRG.GameManager
                             EncountMonsterPosittion = playermaze.EncounterMonster(item.GetMonsterPosition);
                             //조우했으면 반복을 종료
                             if (playermaze.GetBattleStart) break;
-                        }                        
+                        }
+
+                        //플레이어가 아이템 박스를 발견했는지 확인
+                        //시작부터 아이템 박스가 인근에 있을때 해당 코드가 먼저 실행되지 않는 것이 고민이라면
+                        //시작부터 따로 떨어져 소환되도록 설정하면 그만
+                        foreach (var item in itemBoxes)
+                        {
+                            //발견했다면
+                            if (item.EncountItemBox())
+                            {
+                                //얻을 아이템의 인덱스 랜덤 산출
+                                int getItemIndex = new Random().Next(ItemList.GetLength);
+
+                                //아이템 출력 텍스트 위치 설정
+                                Console.SetCursorPosition(width * 2 + 3, height - 1);
+
+                                //아이템 리스트가 비어있지 않으면(꽝에 걸리지 않으면)
+                                if (ItemList.GetItem(getItemIndex) != default)
+                                {
+                                    //플레이어에게 해당 아이템을 제공
+                                    Player.Instance.AddItem(ItemList.GetItem(getItemIndex), 1);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("꽝...");
+                                }
+                                Thread.Sleep(1800);
+                                //아이템 박스 소멸
+                                map.SetTileType(item.GetPosX, item.GetPosY, Tile_Type.Road);
+                                itemBoxes.Remove(item);
+
+                                //아이템 출력 텍스트 제거
+                                Console.SetCursorPosition(width * 2 + 3, height - 1);
+                                Console.WriteLine("                                          ");
+                                break;
+                            }
+                        }
 
                         //턴 바꾸기
                         PlayerTurn = false;

@@ -20,6 +20,16 @@ namespace MazeTPRG.Maze.MazeObject
         {
             UpdateMazeMap(map);
             Player.TileSpawn(map, Tile_Type.Player);
+            //while (true)
+            //{
+            //    Player.TileSpawn(map, Tile_Type.Player);
+            //    bool turm1 = maze.GetTile[Player.GetPosX - 1, Player.GetPosY] == Tile_Type.Road;
+            //    bool turm2 = maze.GetTile[Player.GetPosX + 1, Player.GetPosY] == Tile_Type.Road;
+            //    bool turm3 = maze.GetTile[Player.GetPosX, Player.GetPosY - 1] == Tile_Type.Road;
+            //    bool turm4 = maze.GetTile[Player.GetPosX, Player.GetPosY + 1] == Tile_Type.Road;
+            //    if (turm1 && turm2 && turm3 && turm4) break;
+            //}            
+
             PlayerPosition = new int[2];
         }
 
