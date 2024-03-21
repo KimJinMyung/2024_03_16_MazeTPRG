@@ -18,7 +18,7 @@ namespace MazeTPRG.UI
 
             Console.CursorVisible = false;
 
-            Console.Title = "어둠의 미궁";
+            Console.Title = "미노타우르스의 미궁";
 
             Console.SetCursorPosition(22, CursurPositionY - 2);
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -27,14 +27,16 @@ namespace MazeTPRG.UI
             Console.WriteLine("#                                           #");
             Console.SetCursorPosition(22, CursurPositionY);
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("#     어둠의 미궁에 오신 것을 환영합니다.   #");
+            Console.WriteLine("#             미노타우르스의 미궁           #");
             Console.SetCursorPosition(22, CursurPositionY + 1);
             Console.ForegroundColor = ConsoleColor.DarkGray;
             Console.WriteLine("#                                           #");
             Console.SetCursorPosition(22, CursurPositionY + 2);
             Console.WriteLine("#############################################");
-
             Console.ResetColor();
+
+            Console.SetCursorPosition(27, CursurPositionY + 6);
+            Console.WriteLine("진행을 원하면 아무 키나 입력하시오...");
         }
     }
 }

@@ -17,12 +17,19 @@ namespace MazeTPRG
             //플레이어 선언
             Player player = Player.Instance;
             player.InitItem();
-            
+
+            //타이틀 출력
             TitleUI titleUI = new TitleUI();
-            Thread.Sleep(1000);
+            while (Console.KeyAvailable) { Console.ReadKey(true); }
+            ConsoleKeyInfo InputKey = Console.ReadKey();
+            
+            //게임 스토리 출력
+            StoryUI storyUI = new StoryUI();
+            while (Console.KeyAvailable) { Console.ReadKey(true); }
+            ConsoleKeyInfo InputKey2 = Console.ReadKey();
 
             //게임 시작
-            MazeGameManager mazeGame = new MazeGameManager(25, 25);                        
+            MazeGameManager mazeGame = new MazeGameManager(15, 15);
         }
     }
 }

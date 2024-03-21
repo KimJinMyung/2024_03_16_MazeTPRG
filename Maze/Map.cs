@@ -141,23 +141,39 @@ namespace MazeTPRG.Maze
 
             Console.Clear();
             ConsoleColor consoleColor = Console.ForegroundColor;
+
+            Console.SetCursorPosition(2, 2);
+            //for (int y = 0; y < height; y++)
+            //{
+            //    for (int x = 0; x < width; x++)
+            //    {
+            //        bool term1 = x >= i - 2 && x <= i + 2;
+            //        bool term2 = y >= k - 2 && y <= k + 2;
+            //        if (term1 && term2 || tile[x, y] == Tile_Type.Monster)
+            //        {
+            //            Console.ForegroundColor = GetTileColor(tile[x, y]);
+            //        }
+            //        else
+            //        {
+            //            Console.ForegroundColor = ConsoleColor.Black;
+            //        }
+            //        Console.Write(Check);
+            //    }
+            //    Console.SetCursorPosition(2, 2 + y+1);
+            //    Console.WriteLine();
+            //}
+            //Console.ForegroundColor = consoleColor;
+
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    bool term1 = x >= i - 2 && x <= i + 2;
-                    bool term2 = y >= k - 2 && y <= k + 2;
-                    if (term1 && term2 || tile[x, y] == Tile_Type.Monster)
-                    {
+                   
                         Console.ForegroundColor = GetTileColor(tile[x, y]);
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.Black;
-                    }
+                   
                     Console.Write(Check);
                 }
-                Console.WriteLine();
+                Console.SetCursorPosition(2, 2 + y + 1);
             }
             Console.ForegroundColor = consoleColor;
         }

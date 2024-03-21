@@ -5,6 +5,7 @@ using MazeTPRG.Maze;
 using MazeTPRG.Maze.Input;
 using MazeTPRG.Maze.MazeObject;
 using MazeTPRG.Maze.MazeObject.MazeObject;
+using MazeTPRG.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +33,7 @@ namespace MazeTPRG.GameManager
         private int GameRound =0;
 
         public MazeGameManager(int width, int height)
-        {
-            this.width = width;
+        {         
             monsters = new List<MazeMonster>();
             EncountMonsterPosittion = new int[2];
             inputKey = new InputKey();
@@ -47,13 +47,12 @@ namespace MazeTPRG.GameManager
                 //3라운드까지 
                 if (GameRound > 3) 
                 { 
-                    Console.Clear();
-                    Console.WriteLine("Congratulation");
-                    Console.WriteLine("게임을 클리어하셨습니다.");
+                    Ending_UI ending = new Ending_UI();
                     break; 
-                }
-
-                map = new Map(width, height);
+                }else
+                {
+                    map = new Map(width + 10*(GameRound-1), height + 10*(GameRound-1));
+                }                
 
                 //플레이어 랜덤 스폰
                 MazePlayerPosition playermaze = new MazePlayerPosition(map);
@@ -144,11 +143,11 @@ namespace MazeTPRG.GameManager
                     //플레이어 캐릭터가 탈출구에 도착하면 해당 라운드 종료
                     if (playermaze.Exit())
                     {
-                        Console.SetCursorPosition(width * 2 + 3, 8);
+                        Console.SetCursorPosition(map.width+3, 5);
                         Console.WriteLine("==================");
-                        Console.SetCursorPosition(width * 2 + 3, 9);
+                        Console.SetCursorPosition(map.width +3, 6);
                         Console.WriteLine($"!!{GameRound} 라운드 클리어!!");
-                        Console.SetCursorPosition(width * 2 + 3, 10);
+                        Console.SetCursorPosition(map.width+3, 7);
                         Console.WriteLine("==================");
 
                         Thread.Sleep(1800);
@@ -256,11 +255,11 @@ namespace MazeTPRG.GameManager
         //현재 게임 라운드 출력
         public void PrintGameRound()
         {
-            Console.SetCursorPosition(width * 2 + 3, 2);
+            Console.SetCursorPosition(map.width + 5, 2);
             Console.WriteLine("==================");
-            Console.SetCursorPosition(width * 2 + 8, 3);
+            Console.SetCursorPosition(map.width + 10, 3);
             Console.WriteLine($"{GameRound} 라운드");
-            Console.SetCursorPosition(width * 2 + 3, 4);
+            Console.SetCursorPosition(map.width + 5, 4);
             Console.WriteLine("==================");
         }
         
