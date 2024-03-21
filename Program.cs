@@ -6,6 +6,7 @@ using MazeTPRG.Item.Potion;
 using MazeTPRG.Item.Weapons;
 using MazeTPRG.Maze;
 using MazeTPRG.Monster.MonsterListManager;
+using MazeTPRG.UI;
 
 namespace MazeTPRG
 {
@@ -16,9 +17,12 @@ namespace MazeTPRG
             //플레이어 선언
             Player player = Player.Instance;
             player.InitItem();
-                      
+            
+            TitleUI titleUI = new TitleUI();
+            Thread.Sleep(1000);
+
             //게임 시작
-            MazeGameManager mazeGame = new MazeGameManager(15, 25);                        
+            MazeGameManager mazeGame = new MazeGameManager(25, 25);                        
         }
     }
 }

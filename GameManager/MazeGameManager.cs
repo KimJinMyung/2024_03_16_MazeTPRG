@@ -89,8 +89,8 @@ namespace MazeTPRG.GameManager
                     //게임 라운드 표시 출력
                     PrintGameRound();
 
-                    //누구의 차례인지 출력
-                    PrintWhoPlayTurn(PlayerTurn);                    
+                    ////누구의 차례인지 출력
+                    //PrintWhoPlayTurn(PlayerTurn);                    
 
                     //콘솔 커서 위치 초기화
                     Console.SetCursorPosition(0, height);
@@ -264,21 +264,21 @@ namespace MazeTPRG.GameManager
             Console.WriteLine("==================");
         }
         
-        //누구의 턴인지 출력
-        public void PrintWhoPlayTurn(bool playerTurn)
-        {
-            string Textstr = string.Empty;
-            if (playerTurn)
-            {
-                Textstr = $"{Player.Instance.GetName}의 턴!!";
-            }else Textstr = "몬스터의 턴!!";
+        ////누구의 턴인지 출력
+        //public void PrintWhoPlayTurn(bool playerTurn)
+        //{
+        //    string Textstr = string.Empty;
+        //    if (playerTurn)
+        //    {
+        //        Textstr = $"{Player.Instance.GetName}의 턴!!";
+        //    }else Textstr = "몬스터의 턴!!";
 
-            Console.SetCursorPosition(width * 2 + 3, 5);
-            Console.WriteLine("==================");
-            Console.SetCursorPosition(width * 2 + 6, 6);
-            Console.WriteLine(Textstr);
-            Console.SetCursorPosition(width * 2 + 3, 7);
-            Console.WriteLine("==================");
-        }
+        //    Console.SetCursorPosition(width * 2 + 3, 5);
+        //    Console.WriteLine("==================");
+        //    Console.SetCursorPosition(width * 2 + 6, 6);
+        //    Console.WriteLine(Textstr);
+        //    Console.SetCursorPosition(width * 2 + 3, 7);
+        //    Console.WriteLine("==================");
+        //}
     }
 }
