@@ -74,7 +74,7 @@ namespace MazeTPRG.GameManager
                 //몬스터 초기화
                 monsters.Clear();
                 //몬스터 랜덤 스폰
-                for (int i = 0; i < 1/*new Random().Next(3, 8)*/; i++)
+                for (int i = 0; i < new Random().Next(5, 8); i++)
                 {
                     MazeMonster mazeMonster = new MazeMonster();
                     mazeMonster.MazeMonsterSpawn(map);
@@ -84,7 +84,7 @@ namespace MazeTPRG.GameManager
                 while (true)
                 {
                     //맵 출력
-                    map.Render();
+                    map.Render();                    
 
                     //게임 라운드 표시 출력
                     PrintGameRound();
@@ -140,6 +140,20 @@ namespace MazeTPRG.GameManager
 
                     //ReadLine에 남아있는 것을 전부 비워라
                     while (Console.KeyAvailable) { Console.ReadKey(true); }
+
+                    //플레이어 캐릭터가 탈출구에 도착하면 해당 라운드 종료
+                    if (playermaze.Exit())
+                    {
+                        Console.SetCursorPosition(width * 2 + 3, 8);
+                        Console.WriteLine("==================");
+                        Console.SetCursorPosition(width * 2 + 3, 9);
+                        Console.WriteLine($"!!{GameRound} 라운드 클리어!!");
+                        Console.SetCursorPosition(width * 2 + 3, 10);
+                        Console.WriteLine("==================");
+
+                        Thread.Sleep(1800);
+                        break;
+                    }
 
                     //플레이어의 차례
                     if (PlayerTurn)                    
@@ -215,8 +229,6 @@ namespace MazeTPRG.GameManager
                     //몬스터의 차례
                     else
                     {                        
-                        //몬스터의 행동에 딜레이 추가
-                        Thread.Sleep(1500);
 
                         //몬스터 이동
                         for (int i = 0; i < monsters.Count; i++)
@@ -235,21 +247,7 @@ namespace MazeTPRG.GameManager
                         }
                         //턴바꾸기
                         PlayerTurn = true;
-                    }
-
-                    //플레이어 캐릭터가 탈출구에 도착하면 해당 라운드 종료
-                    if (mazeExit.Exit())
-                    {
-                        Console.SetCursorPosition(width * 2 + 3, 8);
-                        Console.WriteLine("==================");
-                        Console.SetCursorPosition(width * 2 + 3, 9);
-                        Console.WriteLine($"!!{GameRound} 라운드 클리어!!");
-                        Console.SetCursorPosition(width * 2 + 3, 10);
-                        Console.WriteLine("==================");
-
-                        Thread.Sleep(1800);
-                        break;
-                    }
+                    }                    
                 }
             }
             

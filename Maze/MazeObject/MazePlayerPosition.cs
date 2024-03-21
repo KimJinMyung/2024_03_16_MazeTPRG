@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using MazeTPRG.Maze.MazeObject.MazeObject;
@@ -10,6 +11,7 @@ namespace MazeTPRG.Maze.MazeObject
     internal class MazePlayerPosition
     {
         private int[] PlayerPosition;
+        private int[] NextPlayerPosition;
         protected Player Player = Player.Instance;
         private bool BattleStart = false;
         public bool GetBattleStart { get { return BattleStart; } }
@@ -31,20 +33,32 @@ namespace MazeTPRG.Maze.MazeObject
             //}            
 
             PlayerPosition = new int[2];
+            NextPlayerPosition = new int[2];
         }
 
         public bool MoveObject(Direction direction)
         {
             if (BattleStart) return true;
 
-            int[] ObjectPosition = Player.Move(direction);
-            bool isNotWall = maze.GetTile[ObjectPosition[0], ObjectPosition[1]] != Tile_Type.Wall;
-            if (ObjectPosition[0] == Player.GetPosX && ObjectPosition[1] ==Player.GetPosY) { return false; }
+            NextPlayerPosition = Player.Move(direction);
+            bool isNotWall = maze.GetTile[NextPlayerPosition[0], NextPlayerPosition[1]] != Tile_Type.Wall;
+            if (NextPlayerPosition[0] == Player.GetPosX && NextPlayerPosition[1] ==Player.GetPosY) { return false; }
             if (isNotWall)
             {
                 maze.SetTileType(Player.GetPosX, Player.GetPosY, Tile_Type.Road);
-                maze.SetTileType(ObjectPosition[0], ObjectPosition[1], Tile_Type.Player);
-                Player.SetPosition(ObjectPosition[0], ObjectPosition[1]);
+                maze.SetTileType(NextPlayerPosition[0], NextPlayerPosition[1], Tile_Type.Player);
+                Player.SetPosition(NextPlayerPosition[0], NextPlayerPosition[1]);
+                return true;
+            }
+            else return false;
+        }
+
+        public bool Exit()
+        {
+            bool turm1 = maze.GetTile[NextPlayerPosition[0], NextPlayerPosition[1]] == Tile_Type.Exit;
+
+            if (turm1)
+            {
                 return true;
             }
             else return false;
@@ -74,6 +88,7 @@ namespace MazeTPRG.Maze.MazeObject
             else BattleStart = false;
             return default;
         }
+
         
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MazeTPRG.Inventory;
+using MazeTPRG.Skill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,9 @@ namespace MazeTPRG.Battle
     enum PlayerAction
     {
         Attack=1,
-        UseItem=2,
-        Run=3
+        SkillAttack = 2,
+        UseItem=3,
+        Run=4
     }
 
     internal class SelectAction
@@ -20,6 +22,8 @@ namespace MazeTPRG.Battle
         public Dictionary<PlayerAction, Action> Actions;
         private bool runSucccess;
         private InventoryWindow inventoryWindow;
+        private SelectSkill skillWindow;
+        private int[] SelectMenuPos;
 
         public bool GetBattleEnd
         { 
@@ -31,19 +35,26 @@ namespace MazeTPRG.Battle
             Actions = new Dictionary<PlayerAction, Action>();
             runSucccess = false;
             inventoryWindow = new InventoryWindow();
+            skillWindow = new SelectSkill();
+            SelectMenuPos = new int[2];
         }
 
         public bool Select()
         {
             bool turnEnd = false;
-            Console.WriteLine("=====================");
-            Console.WriteLine("1. 공격");
-            Console.WriteLine("2. 아이템 사용");
-            Console.WriteLine("3. 도망");
-            Console.WriteLine("=====================\n");
+
+            SelectMenuPos[0] = Console.GetCursorPosition().Left;
+            SelectMenuPos[1] = Console.GetCursorPosition().Top;            
 
             Console.WriteLine("=====================");
-            Console.Write("행동을 선택하세요. : ");
+            Console.WriteLine("1. 공격");
+            Console.WriteLine("2. 스킬 사용");
+            Console.WriteLine("3. 아이템 사용");
+            Console.WriteLine("4. 도망");
+            Console.WriteLine("=====================\n");            
+
+            Console.WriteLine("=====================");
+            Console.Write("행동 선택 : ");
             try
             {
                 //중요하다
@@ -68,7 +79,7 @@ namespace MazeTPRG.Battle
             switch (action)
             {
                 case (int)PlayerAction.Attack:
-                    Console.Write("공격할 몬스터를 선택 : ");           
+                    Console.Write("공격할 몬스터 선택 : ");           
                     
                     int AttackMonsterIndex = int.Parse(Console.ReadLine());
                     Console.WriteLine("=====================");
@@ -77,6 +88,18 @@ namespace MazeTPRG.Battle
                     turnEnd = Player.Attack(AttackMonsterIndex);                    
                     return turnEnd;
 
+                case (int)PlayerAction.SkillAttack:
+
+                    //메뉴 텍스트 초기화 및 위치 설정
+                    Console.SetCursorPosition(SelectMenuPos[0], SelectMenuPos[1]);
+                    for (int i = 0; i < 10; i++)
+                    {
+                        Console.WriteLine("                         ");
+                    }
+                    Console.SetCursorPosition(SelectMenuPos[0], SelectMenuPos[1]);
+                    //스킬 시전
+                    turnEnd = skillWindow.PrintSkillSelect();
+                    return turnEnd;
                 case (int)PlayerAction.UseItem:
                     turnEnd = inventoryWindow.PirntInventoryWindow();                    
                     Thread.Sleep(1500);                    
@@ -101,5 +124,11 @@ namespace MazeTPRG.Battle
             }
         }
 
+        public void SkillCoolTimeMinus(int battleCount)
+        {
+            skillWindow.SkillCoolTimeMinus(battleCount);
+        }
     }
+
+
 }

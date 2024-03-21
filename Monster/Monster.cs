@@ -52,5 +52,10 @@ namespace MazeTPRG.Monster
         //몬스터의 공격
         public abstract bool Attack(Player player);        
        
+
+        public void SpeedValueTrans(double effectValue)
+        {
+            this.Speed -= effectValue;
+        }
     }
 }

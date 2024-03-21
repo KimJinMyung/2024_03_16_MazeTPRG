@@ -16,9 +16,10 @@ namespace MazeTPRG.Battle
         private SelectAction selectAction;
         private ItemList ItemList;
         private bool PlayerSurvive;
+
         public bool GetPlayerSurvive { get { return PlayerSurvive; } }
         //플레이어 턴까지 남은 수
-        private int TurnCount;
+        private int TurnCount=0;
         //공격하는 몬스터의 index
         private int AttackMonsterIndex;
         //진행되는 턴의 수
@@ -30,14 +31,15 @@ namespace MazeTPRG.Battle
         //플레이어 도망 성공
         public Battle()
         {
-            PlayerSurvive = false;
-
+            PlayerSurvive = false;             
             //배틀 몬스터 생성
-            BattleMonsterList = new BattleMonsterList();
+            BattleMonsterList = new BattleMonsterList();            
 
             //입력받은 몬스터들과 배틀 시작
             player.BattleMonster(BattleMonsterList);
-            int BattleMonsterCount = BattleMonsterList.Count();           
+
+            //플레이어 선택지 생성
+            selectAction = new SelectAction();
 
             //스피드 선공권 결정
             SpeedFirstTurnDecide();
@@ -48,13 +50,32 @@ namespace MazeTPRG.Battle
             //공격하는 몬스터의 인덱스 초기화
             AttackMonsterIndex = 0;
 
+            int tempnum = 1;
+
             //여기에서부터 반복
+            
             while (true)
             {
-                Console.Clear();
+                //몬스터와 플레이어의 순서 순회
                 playingTurnCount++;
+                if (playingTurnCount > BattleMonsterList.Count() + 1)
+                {
+                    tempnum++;
+
+                    //순회가 종료되면 다시 우선권을 정한다.
+                    SpeedFirstTurnDecide();
+
+                    //플레이어의 스킬 지속 시간 및 쿨타임 감소                
+                    selectAction.SkillCoolTimeMinus(tempnum);
+
+                    playingTurnCount = 0;
+                }
+
+                Console.Clear();
+
+                //현재 턴 출력
                 Console.WriteLine("=====================");
-                Console.WriteLine($"    {playingTurnCount}번째 턴!!");
+                Console.WriteLine($"    {tempnum}번째 턴!!");
                 Console.WriteLine("=====================");
                
                 //플레이어의 턴까지 남은 턴의 수 출력
@@ -64,23 +85,22 @@ namespace MazeTPRG.Battle
                     Console.WriteLine($"행동까지 {TurnCount} 턴 남음");
                     Console.WriteLine("=====================");
                 }
-                Console.WriteLine();             
+                Console.WriteLine();
 
                 //몬스터의 인덱스가 배틀 몬스터 리스트의 수보다 같거나크면
                 //다시 0에서부터 시작.
-                AttackMonsterIndex = AttackMonsterIndex % BattleMonsterList.Count();              
+                AttackMonsterIndex = AttackMonsterIndex % BattleMonsterList.Count();
+
+                //배틀할 몬스터의 리스트 출력
+                BattleMonsterList.PrintBattleMonsterList();
+
+                //플레이어의 배틀 정보창 출력
+                player.PrintBattlePlayerInfo();                
 
                 //플레이어 턴
-                if(TurnCount <= 0)
-                {
-                    //배틀할 몬스터의 리스트 출력
-                    BattleMonsterList.PrintBattleMonsterList();
-
-                    //플레이어의 배틀 정보창 출력
-                    player.PrintBattlePlayerInfo();
-
-                    //플레이어의 선택지 생성
-                    selectAction = new SelectAction();
+                if (TurnCount <= 0)
+                {                   
+                    //플레이어의 행동 선택                   
                     bool PlayerTurnEnd = selectAction.Select();
                     if (!PlayerTurnEnd) 
                     {
@@ -95,17 +115,11 @@ namespace MazeTPRG.Battle
                         PlayerSurvive = true;
                         if (selectAction.GetBattleEnd) break;
                     }
-                    //도망이 아닌 다른 선택지를 고른 경우
-                    else
-                    {
-                        //플레이어의 동작 이후 몬스터들의 정보 출력
-                        BattleMonsterList.PrintBattleMonsterList();
-                    }
                     Thread.Sleep(2000);
 
                     //끝나면 TurnCount를 가장 마지막으로 미룬다.
                     TurnCount = BattleMonsterList.Count();
-                    //(배틀 몬스터 리스트의 수를 대입받는다.)
+                    //(배틀 몬스터 리스트의 수를 대입받는다.)                 
                 }
                 //몬스터 턴
                 else
@@ -123,8 +137,10 @@ namespace MazeTPRG.Battle
                     player.PrintBattlePlayerInfo();
 
                     Thread.Sleep(2000);
+
                     //동작이 끝나면 공격하는 몬스터의 index를 1 증가.
                     AttackMonsterIndex++;
+
                     //끝나면 플레이어의 TurnCount를 1 감소시킨다.
                     TurnCount--;
                 }
@@ -156,7 +172,7 @@ namespace MazeTPRG.Battle
 
                     PlayerSurvive = true;
                     break; 
-                }                                 
+                }                
             }                
         }
 
@@ -166,6 +182,7 @@ namespace MazeTPRG.Battle
             BattleMonsterList.SpeedSort();
             foreach (var item in BattleMonsterList.GetSortMonster)
             {
+                TurnCount = 0;
                 if (player.GetSpeed < item.GetSpeed) TurnCount++;
             }
         }
@@ -183,7 +200,7 @@ namespace MazeTPRG.Battle
             Console.WriteLine($"{player.GetName}의 속도 : {player.GetSpeed}");
             Console.WriteLine("==================================");
 
-            Thread.Sleep(1500);
+            Thread.Sleep(1000);
             Console.WriteLine();
             Console.WriteLine("공격 순서는 아래와 같습니다.\n");
             

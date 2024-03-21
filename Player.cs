@@ -10,6 +10,7 @@ using MazeTPRG.Monster.MonsterListManager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,7 @@ namespace MazeTPRG
 
         public string GetName {  get { return name; } }
         public double GetSpeed { get { return Speed; } }
+        public double GetATK {  get { return ATK; } }
 
         //아이템 인벤토리 
         private Inventory.Inventory itemInventory;
@@ -192,7 +194,16 @@ namespace MazeTPRG
         {
             this.Speed += EffectValue;
         }
-        
+
+        public void AddCurrentEXP(int monsterIndex)
+        {
+            this.currentEXP += battleMonsterList.GetBattleMonster(monsterIndex - 1).GetGiveEXP;
+            battleMonsterList.Remove(monsterIndex - 1);
+            battleMonsterList.SpeedSort();
+            LevelUp();
+        }
+
+
         #endregion
 
         #region item
@@ -237,6 +248,9 @@ namespace MazeTPRG
         #region Battle
         //배틀할 몬스터의 리스트
         private BattleMonsterList battleMonsterList;
+
+        //배틀할 몬스터 반환
+        public BattleMonsterList GetBattleMonsterList { get { return battleMonsterList; } }
 
         //배틀할 몬스터 리스트를 입력받는다.
         public void BattleMonster(BattleMonsterList battleMonsterList)
@@ -288,10 +302,7 @@ namespace MazeTPRG
                 bool isKillMonster = battleMonsterList.GetBattleMonster(index - 1).Hurt(AttackDamage2);
                 if (isKillMonster)
                 {
-                    this.currentEXP += battleMonsterList.GetBattleMonster(index - 1).GetGiveEXP;
-                    battleMonsterList.Remove(index - 1);
-                    battleMonsterList.SpeedSort();
-                    LevelUp(); ;
+                    AddCurrentEXP(index);
                 }
                 #endregion
             }
@@ -307,17 +318,14 @@ namespace MazeTPRG
                 bool isKillMonster = battleMonsterList.GetBattleMonster(index - 1).Hurt(AttackDamage2);
                 if (isKillMonster)
                 {
-                    this.currentEXP += battleMonsterList.GetBattleMonster(index - 1).GetGiveEXP;
-                    battleMonsterList.Remove(index - 1);
-                    battleMonsterList.SpeedSort();
-                    LevelUp(); ;
+                    AddCurrentEXP(index);
                 }
                 #endregion
             }            
             //공격 성공
             return true;
         }
-
+       
         //도망
         public bool Run()
         {
@@ -344,6 +352,7 @@ namespace MazeTPRG
             Console.WriteLine("=====================");
             Console.WriteLine($"HP : {Math.Round(currentHP,2)}"); 
             Console.WriteLine($"MP : {Math.Round(currentMP,2)}");
+            Console.WriteLine($"속도 : {Math.Round(Speed, 2)}");
             Console.WriteLine("=====================");
         }
 
@@ -357,6 +366,7 @@ namespace MazeTPRG
             Console.WriteLine($"MP : {Math.Round(currentMP, 2)}");
             Console.WriteLine($"공격력 : {Math.Round(ATK, 2)}");
             Console.WriteLine($"방어력 : {Math.Round(defense, 2)}");
+            Console.WriteLine($"속도 : {Math.Round(Speed, 2)}");
             Console.WriteLine("=====================");
         }
 

@@ -51,6 +51,7 @@ namespace MazeTPRG.Monster.MonsterListManager
                 Console.WriteLine("=====================");
                 Console.WriteLine($"{i + 1}번 몬스터 : {BattleMonster[i].GetMonsterName}");
                 Console.WriteLine($"HP : {Math.Round(BattleMonster[i].GetHP, 2)}");
+                Console.WriteLine($"speed : {BattleMonster[i].GetSpeed}");
                 Console.WriteLine("=====================");
             }
         }

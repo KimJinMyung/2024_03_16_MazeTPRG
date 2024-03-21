@@ -113,19 +113,22 @@ namespace MazeTPRG.Maze
         private List<int[]> GetUnVisitedTile(int x, int y)
         {
             List<int[]> tiles = new List<int[]>();
+            int[] WallLimit = new int[2];
+            if (this.width % 2 != 0) { WallLimit[0] = 2; } else { WallLimit[0] = 3; }
+            if (this.height % 2 != 0) { WallLimit[1] = 2; } else { WallLimit[1] = 3; }
 
             //왼쪽
-            if ( x >=2 && !visited[x-2,y] ) 
-                tiles.Add(new int[] {x-2,y});
+            if (x >= WallLimit[0] && !visited[x - WallLimit[0], y])
+                tiles.Add(new int[] { x - 2, y });
             //위
-            if (y >= 2 && !visited[x, y-2])
-                tiles.Add(new int[] { x, y-2 });
+            if (y >= WallLimit[1] && !visited[x, y - WallLimit[1]])
+                tiles.Add(new int[] { x, y - 2 });
             //오른쪽
-            if (x < width-2 && !visited[x +2, y]) 
-                tiles.Add(new int[] { x+2, y });
+            if (x < width - WallLimit[0] && !visited[x + WallLimit[0], y])
+                tiles.Add(new int[] { x + 2, y });
             //아래
-            if (y < height-2 && !visited[x , y+2])
-                tiles.Add(new int[] { x, y +2});
+            if (y < height - WallLimit[1] && !visited[x, y + WallLimit[1]])
+                tiles.Add(new int[] { x, y + 2 });
 
             return tiles;
         }
@@ -133,13 +136,25 @@ namespace MazeTPRG.Maze
         //화면 출력
         public void Render()
         {
+            int i = Player.Instance.GetPosX;
+            int k = Player.Instance.GetPosY;
+
             Console.Clear();
             ConsoleColor consoleColor = Console.ForegroundColor;
             for (int y = 0; y < height; y++)
             {
                 for (int x = 0; x < width; x++)
                 {
-                    Console.ForegroundColor = GetTileColor(tile[x, y]);
+                    bool term1 = x >= i - 2 && x <= i + 2;
+                    bool term2 = y >= k - 2 && y <= k + 2;
+                    if (term1 && term2 || tile[x, y] == Tile_Type.Monster)
+                    {
+                        Console.ForegroundColor = GetTileColor(tile[x, y]);
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Black;
+                    }
                     Console.Write(Check);
                 }
                 Console.WriteLine();

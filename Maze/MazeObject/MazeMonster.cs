@@ -72,6 +72,7 @@ namespace MazeTPRG.Maze.MazeObject
                 Direction direction = RandomDirection();
                 ObjectPosition = monster.Move(direction);
 
+                if (ObjectPosition[0] >= maze.width || ObjectPosition[0] <= 0 || ObjectPosition[1] >= maze.height || ObjectPosition[1] <= 0) continue;
                 //이동하려는 좌표에 몬스터가 존재하면 정지한다.
                 if (maze.GetTile[ObjectPosition[0], ObjectPosition[1]] == Tile_Type.Monster) break;
 

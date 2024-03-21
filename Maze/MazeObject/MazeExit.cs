@@ -17,18 +17,18 @@ namespace MazeTPRG.Maze.MazeObject.MazeObject
             player = Player.Instance;
         }
 
-        public bool Exit()
-        {
-            bool turm1 = maze.GetTile[player.GetPosX - 1, player.GetPosY] == Tile_Type.Exit;
-            bool turm2 = maze.GetTile[player.GetPosX + 1, player.GetPosY] == Tile_Type.Exit;
-            bool turm3 = maze.GetTile[player.GetPosX, player.GetPosY - 1] == Tile_Type.Exit;
-            bool turm4 = maze.GetTile[player.GetPosX, player.GetPosY + 1] == Tile_Type.Exit;
+        //public bool Exit()
+        //{
+        //    bool turm1 = maze.GetTile[player.GetPosX - 1, player.GetPosY] == Tile_Type.Exit;
+        //    bool turm2 = maze.GetTile[player.GetPosX + 1, player.GetPosY] == Tile_Type.Exit;
+        //    bool turm3 = maze.GetTile[player.GetPosX, player.GetPosY - 1] == Tile_Type.Exit;
+        //    bool turm4 = maze.GetTile[player.GetPosX, player.GetPosY + 1] == Tile_Type.Exit;
 
-            if (turm1 || turm2 || turm3 || turm4)
-            {
-                return true;
-            }
-            else return false;
-        }
+        //    if (turm1 || turm2 || turm3 || turm4)
+        //    {
+        //        return true;
+        //    }
+        //    else return false;
+        //}
     }
 }
