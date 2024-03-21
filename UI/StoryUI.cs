@@ -21,7 +21,7 @@ namespace MazeTPRG.UI
             int cursorLine = 0;
             foreach (var item in storyList)
             {
-                Console.SetCursorPosition(15, (windowHeight / 2) - 2 + cursorLine);
+                Console.SetCursorPosition(15, (windowHeight / 2) - 5 + cursorLine);
                 TextAni(item);
                 cursorLine++;
             }
@@ -33,6 +33,10 @@ namespace MazeTPRG.UI
         public void GameStroy()
         {    
             storyList.Add("그리스 신화에서 등장하는 괴물, 미노타우르스...");
+            storyList.Add("반인반수인 그 괴물은 자신의 쾌락을 위해 인간을 학살하고 다녔다.");
+            storyList.Add("이에 한 왕은 자신의 백성들이 괴물에 의하여 죽는 것을 참지 못하였고");
+            storyList.Add("자신의 모든 군대를 동원하여 그를 미로안에 가두는 것에 성공한다.");
+            storyList.Add("\n");
             storyList.Add("현재 당신은 사랑하는 그/그녀 와의 결혼 자격을 증명하기 위해");
             storyList.Add("크레타 섬에 위치한 이곳, 미노타우르스의 미궁에 발을 들이기로 한다.");
             storyList.Add("\n");
