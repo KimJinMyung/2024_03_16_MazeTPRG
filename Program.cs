@@ -22,7 +22,7 @@ namespace MazeTPRG
             TitleUI titleUI = new TitleUI();
             while (Console.KeyAvailable) { Console.ReadKey(true); }
             ConsoleKeyInfo InputKey = Console.ReadKey();
-            
+
             //게임 스토리 출력
             StoryUI storyUI = new StoryUI();
             while (Console.KeyAvailable) { Console.ReadKey(true); }

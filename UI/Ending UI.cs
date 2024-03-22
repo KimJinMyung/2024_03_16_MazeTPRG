@@ -13,9 +13,9 @@ namespace MazeTPRG.UI
         { 
             Console.Clear();
 
-            Console.SetCursorPosition(15 ,(windowHeight / 2) - 2);
+            Console.SetCursorPosition(17 ,(windowHeight / 2) - 5);
             TextAni("Congratulation");
-            Console.SetCursorPosition(8, (windowHeight / 2));
+            Console.SetCursorPosition(10, (windowHeight / 2)-4);
             TextAni("당신은 무사히 미궁을 빠져나왔습니다.");
         }
 

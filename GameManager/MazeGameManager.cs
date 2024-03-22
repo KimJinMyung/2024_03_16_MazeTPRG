@@ -47,6 +47,7 @@ namespace MazeTPRG.GameManager
                 //3라운드까지 
                 if (GameRound > 3) 
                 { 
+                    //3라운드가 끝나면 엔딩 실행
                     Ending_UI ending = new Ending_UI();
                     break; 
                 }else
@@ -86,10 +87,7 @@ namespace MazeTPRG.GameManager
                     map.Render();                    
 
                     //게임 라운드 표시 출력
-                    PrintGameRound();
-
-                    ////누구의 차례인지 출력
-                    //PrintWhoPlayTurn(PlayerTurn);                    
+                    PrintGameRound();   
 
                     //콘솔 커서 위치 초기화
                     Console.SetCursorPosition(0, height);
@@ -143,12 +141,15 @@ namespace MazeTPRG.GameManager
                     //플레이어 캐릭터가 탈출구에 도착하면 해당 라운드 종료
                     if (playermaze.Exit())
                     {
-                        Console.SetCursorPosition(map.width+3, 5);
-                        Console.WriteLine("==================");
-                        Console.SetCursorPosition(map.width +3, 6);
-                        Console.WriteLine($"!!{GameRound} 라운드 클리어!!");
-                        Console.SetCursorPosition(map.width+3, 7);
-                        Console.WriteLine("==================");
+                        RoundClearText();
+
+                        int line = 0;
+                        foreach (var item in gameRoundClearText)
+                        {
+                            Console.SetCursorPosition(map.GetRenderStartLine[0] + (map.width * 2) + 5, map.GetRenderStartLine[1] + 5 + line);
+                            Console.WriteLine(item);
+                            line++;
+                        }
 
                         Thread.Sleep(1800);
                         break;
@@ -255,29 +256,33 @@ namespace MazeTPRG.GameManager
         //현재 게임 라운드 출력
         public void PrintGameRound()
         {
-            Console.SetCursorPosition(map.width + 5, 2);
-            Console.WriteLine("==================");
-            Console.SetCursorPosition(map.width + 10, 3);
-            Console.WriteLine($"{GameRound} 라운드");
-            Console.SetCursorPosition(map.width + 5, 4);
-            Console.WriteLine("==================");
-        }
-        
-        ////누구의 턴인지 출력
-        //public void PrintWhoPlayTurn(bool playerTurn)
-        //{
-        //    string Textstr = string.Empty;
-        //    if (playerTurn)
-        //    {
-        //        Textstr = $"{Player.Instance.GetName}의 턴!!";
-        //    }else Textstr = "몬스터의 턴!!";
+            GameRoundText();
 
-        //    Console.SetCursorPosition(width * 2 + 3, 5);
-        //    Console.WriteLine("==================");
-        //    Console.SetCursorPosition(width * 2 + 6, 6);
-        //    Console.WriteLine(Textstr);
-        //    Console.SetCursorPosition(width * 2 + 3, 7);
-        //    Console.WriteLine("==================");
-        //}
+            int line = 0;
+            foreach (var item in gameRoundText)
+            {
+                Console.SetCursorPosition(map.GetRenderStartLine[0] + (map.width*2) + 5, map.GetRenderStartLine[1] + 2 + line);
+                Console.WriteLine(item);
+                line++;
+            }            
+        }
+        //게임 라운드 텍스트 설정
+        private List<string> gameRoundText = new List<string>();
+        public void GameRoundText()
+        {
+            gameRoundText.Clear();
+            gameRoundText.Add("==================");
+            gameRoundText.Add($"     {GameRound} 라운드");
+            gameRoundText.Add("==================");
+        }
+        //게임 라운드 클리어 텍스트 설정
+        private List<string> gameRoundClearText = new List<string>();
+        public void RoundClearText()
+        {
+            gameRoundClearText.Clear();
+            gameRoundClearText.Add("==================");
+            gameRoundClearText.Add($"!!{GameRound} 라운드 클리어!!");
+            gameRoundClearText.Add("==================");
+        }
     }
 }

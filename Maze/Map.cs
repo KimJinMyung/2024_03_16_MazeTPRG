@@ -30,6 +30,8 @@ namespace MazeTPRG.Maze
     {
         const char Check = '■';
         private Tile_Type[,] tile;
+        private int[] RenderStartLine;
+        public int[] GetRenderStartLine { get { return RenderStartLine; } }
         public Tile_Type[,] GetTile { get {  return tile; } }
         public void SetTileType(int x, int y, Tile_Type type)
         {
@@ -45,6 +47,7 @@ namespace MazeTPRG.Maze
             this.width = width;
             this.height = height;
             this.rand = new Random();
+            RenderStartLine = new int[2];
 
             //방문 기록 설정
             visited = new bool[this.width, this.height];
@@ -142,6 +145,7 @@ namespace MazeTPRG.Maze
             Console.Clear();
             ConsoleColor consoleColor = Console.ForegroundColor;
 
+            RenderStartLine = [2,2];
             Console.SetCursorPosition(2, 2);
             for (int y = 0; y < height; y++)
             {
@@ -155,26 +159,13 @@ namespace MazeTPRG.Maze
                     }
                     else
                     {
-                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.ForegroundColor = ConsoleColor.DarkGray;
                     }
                     Console.Write(Check);
                 }
                 Console.SetCursorPosition(2, 2 + y + 1);
             }
             Console.ForegroundColor = consoleColor;
-
-            //for (int y = 0; y < height; y++)
-            //{
-            //    for (int x = 0; x < width; x++)
-            //    {
-
-            //            Console.ForegroundColor = GetTileColor(tile[x, y]);
-
-            //        Console.Write(Check);
-            //    }
-            //    Console.SetCursorPosition(2, 2 + y + 1);
-            //}
-            //Console.ForegroundColor = consoleColor;
         }
 
         //타일 색 변경
