@@ -17,6 +17,7 @@ namespace MazeTPRG.Monster.Ork
             Defense = 5;
             Speed = 1;
             GiveEXP = 20;
+            Design = "";
 
             SkillName = "내려찍기";
             SkillDamage = 30;

@@ -32,8 +32,8 @@ namespace MazeTPRG.UI
 
         public void GameStroy()
         {    
-            storyList.Add("그리스 신화에서 등장하는 괴물, 미노타우르스...");
-            storyList.Add("반인반수인 그 괴물은 자신의 쾌락을 위해 인간을 학살하고 다녔다.\n" );
+            storyList.Add("신의 저주에 인하여 탄생한 괴물, 미노타우르스...");
+            storyList.Add("반인반수인 그 괴물은 오늘도 자신의 쾌락을 위해 인간을 학살하고 다녔다.\n" );
             storyList.Add("\n");
             storyList.Add("왕은 자신의 백성들이 괴물에 의하여 죽는 것에 분노하였고");
             storyList.Add("자신의 모든 군대를 동원하여 그를 미로안에 가두는 것에 성공한다.");

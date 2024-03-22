@@ -31,6 +31,8 @@ namespace MazeTPRG.Battle
         //플레이어 도망 성공
         public Battle()
         {
+            Console.SetWindowSize(100, 40);
+
             PlayerSurvive = false;             
             //배틀 몬스터 생성
             BattleMonsterList = new BattleMonsterList();            
@@ -45,7 +47,7 @@ namespace MazeTPRG.Battle
             SpeedFirstTurnDecide();            
 
             //스피드 비교 출력
-            PrintCompareSpeed();
+            //PrintCompareSpeed();
 
             //공격하는 몬스터의 인덱스 초기화
             AttackMonsterIndex = 0;
@@ -76,7 +78,7 @@ namespace MazeTPRG.Battle
                 //현재 턴 출력
                 Console.WriteLine("=====================");
                 Console.WriteLine($"    {turnCound}번째 턴!!");
-                Console.WriteLine("=====================");
+                Console.WriteLine("=====================");            
                
                 //플레이어의 턴까지 남은 턴의 수 출력
                 if (playerTurnCount != 0) 
@@ -91,12 +93,15 @@ namespace MazeTPRG.Battle
                 //다시 0에서부터 시작.
                 AttackMonsterIndex = AttackMonsterIndex % BattleMonsterList.Count();
 
+                BattleMonsterList.SetCusorPosition(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top);
                 //배틀할 몬스터의 리스트 출력
                 BattleMonsterList.PrintBattleMonsterList();
 
+                player.SetCursorPosition(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top);
                 //플레이어의 배틀 정보창 출력
-                player.PrintBattlePlayerInfo();                
+                player.PrintBattlePlayerInfo();
 
+                Console.WriteLine();
                 //플레이어 턴
                 if (playerTurnCount <= 0)
                 {                   
@@ -180,9 +185,9 @@ namespace MazeTPRG.Battle
         public void SpeedFirstTurnDecide()
         {
             BattleMonsterList.SpeedSort();
+            playerTurnCount = 0;
             foreach (var item in BattleMonsterList.GetSortMonster)
-            {
-                playerTurnCount = 0;
+            {                
                 if (player.GetSpeed < item.GetSpeed) playerTurnCount++;
             }
         }

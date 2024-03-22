@@ -57,5 +57,8 @@ namespace MazeTPRG.Monster
         {
             this.Speed -= effectValue;
         }
+
+        protected string Design;
+        public string GetDesign {  get { return Design; } }
     }
 }

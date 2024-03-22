@@ -9,14 +9,12 @@ namespace MazeTPRG.Skill
     internal class Skill_C_Bleeding : SkillClass
     {
         private int TargetIndex;
-        private double SpeedDownValue;
         private bool IsEffectDuaration;
 
         public Skill_C_Bleeding()
         {
             this.skillName = "출혈 부여";
             this.UseMana = 20;
-            this.SpeedDownValue = 0;
             //스킬 쿨타임
             this.SkillCoolTime = 0;
             //지속 턴

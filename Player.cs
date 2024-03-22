@@ -31,11 +31,18 @@ namespace MazeTPRG
         private bool isDead;
         private int Level;
         private int currentEXP;
-        private int maxEXP;        
+        private int maxEXP;
+        private int[] cursorPositionn = new int[2];
+
+        public void SetCursorPosition(int x, int y)
+        {
+            cursorPositionn[0] = x;
+            cursorPositionn[1] = y+5;
+        }
 
         private Random random;
 
-        public double GetCurrentMP {  get { return currentMP; } }
+        public double GetCurrentMP {  get { return currentMP; } }          
         public string GetName {  get { return name; } }
         public double GetSpeed { get { return Speed; } }
         public double GetATK {  get { return ATK; } }
@@ -346,15 +353,30 @@ namespace MazeTPRG
         public void PrintBattlePlayerInfo()
         {
             Console.WriteLine();
-            Console.WriteLine("=====================");
-            Console.WriteLine($"    {name}의 상태");
-            Console.WriteLine("=====================");
-            Console.WriteLine($"Level : {Level}");
-            Console.WriteLine("=====================");
-            Console.WriteLine($"HP : {Math.Round(currentHP,2)}"); 
-            Console.WriteLine($"MP : {Math.Round(currentMP,2)}");
-            Console.WriteLine($"속도 : {Math.Round(Speed, 2)}");
-            Console.WriteLine("=====================");
+            BattlePlayerInfoText();
+
+            int line=1;
+            foreach (var item in PrintText)
+            {
+                Console.SetCursorPosition(2, cursorPositionn[1]+line);
+                Console.Write(item);
+                line++;
+            }
+            Console.WriteLine();
+        }
+        private List<string> PrintText = new List<string>();
+        public void BattlePlayerInfoText()
+        {
+            PrintText.Clear();
+            PrintText.Add("=====================");
+            PrintText.Add($"    {name}의 상태");
+            PrintText.Add("=====================");
+            PrintText.Add($"Level : {Level}");
+            PrintText.Add("=====================");
+            PrintText.Add($"HP : {Math.Round(currentHP, 2)}");
+            PrintText.Add($"MP : {Math.Round(currentMP, 2)}");
+            PrintText.Add($"속도 : {Math.Round(Speed, 2)}");
+            PrintText.Add("=====================");
         }
 
         //플레이어의 상태 출력

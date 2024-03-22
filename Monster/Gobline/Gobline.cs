@@ -17,6 +17,7 @@ namespace MazeTPRG.Monster.Gobline
             Defense = 3;
             Speed = 5;
             GiveEXP = 10;
+            Design = "";
 
             SkillName = "급습";
             SkillDamage = 25;
