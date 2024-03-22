@@ -84,7 +84,6 @@ namespace MazeTPRG.Battle
                     int AttackMonsterIndex = int.Parse(Console.ReadLine());
                     Console.WriteLine("=====================");
                     Console.WriteLine();
-                    //몬스터가 사망하면 다시 순서를 정렬한다.
                     turnEnd = Player.Attack(AttackMonsterIndex);                    
                     return turnEnd;
 

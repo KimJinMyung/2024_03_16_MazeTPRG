@@ -36,6 +36,13 @@ namespace MazeTPRG.Skill
                 return false;
             }            
 
+            if (Player.GetCurrentMP < UseMana)
+            {
+                Console.WriteLine($"마나가 부족합니다.");
+                Thread.Sleep(1500);
+                return false;
+            }
+
             Player.HealMP(-UseMana);
             Console.WriteLine($"{this.skillName} 시전!!!\n");         
 

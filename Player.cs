@@ -35,6 +35,7 @@ namespace MazeTPRG
 
         private Random random;
 
+        public double GetCurrentMP {  get { return currentMP; } }
         public string GetName {  get { return name; } }
         public double GetSpeed { get { return Speed; } }
         public double GetATK {  get { return ATK; } }
