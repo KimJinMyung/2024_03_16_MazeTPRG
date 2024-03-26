@@ -32,8 +32,8 @@ namespace MazeTPRG
             //ConsoleKeyInfo InputKey2 = Console.ReadKey();
 
             //게임 시작
-            //MazeGameManager mazeGame = new MazeGameManager(15, 15);
-            Battle.Battle battle = new Battle.Battle();
+            MazeGameManager mazeGame = new MazeGameManager(15, 15);
+            //Battle.Battle battle = new Battle.Battle();
         }
     }
 }

@@ -17,12 +17,13 @@ namespace MazeTPRG.Battle
         private ItemList ItemList;
         private bool PlayerSurvive;
         private int FirstBattleOrder;
-
+        private int[] tempPos = new int[2];
         public bool GetPlayerSurvive { get { return PlayerSurvive; } }
         //플레이어 턴까지 남은 수
         private int playerTurnCount=0;
         //공격하는 몬스터의 index
-        private int AttackMonsterIndex;        
+        private int AttackMonsterIndex;  
+        private int playingCount=0;
 
         //배틀 종료 조건
         //배틀 몬스터 리스트의 모든 몬스터 제거
@@ -51,45 +52,23 @@ namespace MazeTPRG.Battle
             //공격하는 몬스터의 인덱스 초기화
             AttackMonsterIndex = 0;
 
-            int turnCound = 0;
+            int turnCound = 1;
 
             //여기에서부터 반복
             
             while (true)
-            {             
-                //몬스터와 플레이어의 순서 순회
-                if (playerTurnCount == FirstBattleOrder)
-                {
-                    turnCound++;
-
-                    //플레이어의 스킬 지속 시간 및 쿨타임 감소                
-                    selectAction.SkillCoolTimeMinus(turnCound);
-
-                    //순회가 종료되면 다시 우선권을 정한다.
-                    SpeedFirstTurnDecide();
-
-                    // playingTurnCount = 0;
-                }                                
-
+            {               
+                
                 Console.Clear();
 
                 //현재 턴 출력
                 Console.WriteLine("=====================");
                 Console.WriteLine($"    {turnCound}번째 턴!!");
-                Console.WriteLine("=====================");            
+                Console.WriteLine("=====================");                      
                
-                //플레이어의 턴까지 남은 턴의 수 출력
-                if (playerTurnCount != 0) 
-                {
-                    Console.WriteLine("=====================");
-                    Console.WriteLine($"행동까지 {playerTurnCount} 턴 남음");
-                    Console.WriteLine("=====================");
-                }
-                Console.WriteLine();
-
                 //몬스터의 인덱스가 배틀 몬스터 리스트의 수보다 같거나크면
                 //다시 0에서부터 시작.
-                AttackMonsterIndex = AttackMonsterIndex % BattleMonsterList.Count();
+                AttackMonsterIndex = AttackMonsterIndex % BattleMonsterList.Count(); 
 
                 BattleMonsterList.SetCusorPosition(Console.GetCursorPosition().Left, Console.GetCursorPosition().Top);
                 //배틀할 몬스터의 리스트 출력
@@ -107,7 +86,8 @@ namespace MazeTPRG.Battle
                     //플레이어의 행동 선택                   
                     bool PlayerTurnEnd = selectAction.Select();
                     if (!PlayerTurnEnd) 
-                    {                        
+                    {                  
+                        playingCount--;
                         continue;
                     }
                     
@@ -131,9 +111,12 @@ namespace MazeTPRG.Battle
                     bool playerDead = BattleMonsterList.GetSortMonster[AttackMonsterIndex].Attack(player);
                     if (playerDead)
                     {
-                        PlayerSurvive = false;
+                        PlayerSurvive = false;                        
                         break;
                     }
+                    
+                    tempPos[0] = Console.GetCursorPosition().Left;
+                    tempPos[1] = Console.GetCursorPosition().Top;
 
                     Thread.Sleep(1500);
 
@@ -147,6 +130,23 @@ namespace MazeTPRG.Battle
 
                     //끝나면 플레이어의 TurnCount를 1 감소시킨다.
                     playerTurnCount--;
+                }
+
+                
+                //몬스터와 플레이어의 순서 순회
+                playingCount++;
+                if (/*playerTurnCount == FirstBattleOrder*/ playingCount % (BattleMonsterList.Count() + 1) == 0)
+                {
+                    turnCound++;
+
+                    Console.SetCursorPosition(tempPos[0], tempPos[1] + 1);
+                    //플레이어의 스킬 지속 시간 및 쿨타임 감소                
+                    selectAction.SkillCoolTimeMinus(turnCound);
+
+                    //순회가 종료되면 다시 우선권을 정한다.
+                    SpeedFirstTurnDecide();
+
+                    playingCount = 0;
                 }
 
                 //배틀 몬스터가 모두 처치되었을 경우, 배틀 종료

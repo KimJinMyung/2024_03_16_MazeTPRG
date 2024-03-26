@@ -45,7 +45,7 @@ namespace MazeTPRG.Monster.MonsterListManager
 
         public int Count()
         {
-            return BattleMonster.Count;
+            return BattleMonster.Count;            
         }
 
         public void Remove(int index)
