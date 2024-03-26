@@ -33,7 +33,8 @@ namespace MazeTPRG.GameManager
         private int GameRound =0;
 
         public MazeGameManager(int width, int height)
-        {         
+        {
+            Console.SetWindowSize(100, 30);
             monsters = new List<MazeMonster>();
             EncountMonsterPosittion = new int[2];
             inputKey = new InputKey();
@@ -101,10 +102,11 @@ namespace MazeTPRG.GameManager
                     //몬스터와 플레이어가 조우했는지 확인
                     if (playermaze.GetBattleStart)
                     {
+                        Console.SetCursorPosition(map.GetRenderStartLine[0] + (map.width * 2) + 5, map.GetRenderStartLine[1] + map.height-1);
                         //텍스트 출력
                         Console.SetCursorPosition(2* map.width + 6, height - 2);
                         Console.WriteLine("몬스터와 조우했다.");
-                        Thread.Sleep(1000);
+                        Thread.Sleep(1200);
 
                         //배틀
                         battle = new Battle.Battle();

@@ -5,7 +5,10 @@ using MazeTPRG.Item.Armor.head;
 using MazeTPRG.Item.Potion;
 using MazeTPRG.Item.Weapons;
 using MazeTPRG.Maze;
+using MazeTPRG.Monster.Gobline;
 using MazeTPRG.Monster.MonsterListManager;
+using MazeTPRG.Monster.Ork;
+using MazeTPRG.Monster.Slime;
 using MazeTPRG.UI;
 
 namespace MazeTPRG
@@ -30,6 +33,7 @@ namespace MazeTPRG
 
             //게임 시작
             MazeGameManager mazeGame = new MazeGameManager(15, 15);
+
         }
     }
 }

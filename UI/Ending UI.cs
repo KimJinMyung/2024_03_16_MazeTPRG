@@ -17,6 +17,12 @@ namespace MazeTPRG.UI
             TextAni("Congratulation");
             Console.SetCursorPosition(10, (windowHeight / 2)-4);
             TextAni("당신은 무사히 미궁을 빠져나왔습니다.");
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.WriteLine();
+            }
+            Thread.Sleep(1500);
         }
 
     }

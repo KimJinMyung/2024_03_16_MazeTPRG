@@ -11,11 +11,20 @@ namespace MazeTPRG.Monster.MonsterListManager
         private MonsterList MonsterList;
         private List<Monster> BattleMonster;
         private Random rd;
+        private int[] CursorPosition;
+        private int cusorWidth;
+
+        public void SetCusorPosition(int x, int y)
+        {
+            CursorPosition[0] = x;
+            CursorPosition[1] = y;
+        }
 
         public BattleMonsterList()
         {
             MonsterList = new MonsterList();
             BattleMonster = new List<Monster>();
+            CursorPosition = new int[2];
             rd = new Random();
 
             int MonsterSpawn = rd.Next(MonsterList.Count);
@@ -46,13 +55,31 @@ namespace MazeTPRG.Monster.MonsterListManager
 
         public void PrintBattleMonsterList()
         {
-            for (int i = 0;i < BattleMonster.Count; i++)
+            PrintListAdd();
+
+            int line = 0;
+            cusorWidth = Console.GetCursorPosition().Left;
+            foreach (var item in printList)
+            {   
+                Console.SetCursorPosition(cusorWidth + 2, CursorPosition[1]+line);
+                Console.Write(item);       
+                if(line == 4) cusorWidth = Console.GetCursorPosition().Left;
+                line++;
+                if (line >= 5) line = 0;
+            }
+            
+          }
+        private List<string> printList = new List<string>();
+        public void PrintListAdd()
+        {
+            printList.Clear();
+            for (int i = 0; i < BattleMonster.Count; i++)
             {
-                Console.WriteLine("=====================");
-                Console.WriteLine($"{i + 1}번 몬스터 : {BattleMonster[i].GetMonsterName}");
-                Console.WriteLine($"HP : {Math.Round(BattleMonster[i].GetHP, 2)}");
-                Console.WriteLine($"speed : {BattleMonster[i].GetSpeed}");
-                Console.WriteLine("=====================");
+                printList.Add("=====================");
+                printList.Add($"{i+1}번 몬스터 :  {BattleMonster[i].GetMonsterName}");
+                printList.Add($"HP : {Math.Round(BattleMonster[i].GetHP, 2)}");
+                printList.Add($"speed : {BattleMonster[i].GetSpeed}");
+                printList.Add("=====================");                
             }
         }
 

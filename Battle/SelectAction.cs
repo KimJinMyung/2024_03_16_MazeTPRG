@@ -24,6 +24,7 @@ namespace MazeTPRG.Battle
         private InventoryWindow inventoryWindow;
         private SelectSkill skillWindow;
         private int[] SelectMenuPos;
+        private List<string> TextList;
 
         public bool GetBattleEnd
         { 
@@ -37,6 +38,22 @@ namespace MazeTPRG.Battle
             inventoryWindow = new InventoryWindow();
             skillWindow = new SelectSkill();
             SelectMenuPos = new int[2];
+            TextList = new List<string>();
+        }
+
+        public void ActionSelectMenuText()
+        {
+            TextList.Clear();
+
+            TextList.Add("=====================");
+            TextList.Add("1. 공격");
+            TextList.Add("2. 스킬 사용");
+            TextList.Add("3. 아이템 사용");
+            TextList.Add("4. 도망");
+            TextList.Add("=====================\n");
+
+            TextList.Add("=====================");
+            TextList.Add("행동 선택 : ");
         }
 
         public bool Select()
@@ -44,17 +61,18 @@ namespace MazeTPRG.Battle
             bool turnEnd = false;
 
             SelectMenuPos[0] = Console.GetCursorPosition().Left;
-            SelectMenuPos[1] = Console.GetCursorPosition().Top;            
+            SelectMenuPos[1] = Console.GetCursorPosition().Top;
 
-            Console.WriteLine("=====================");
-            Console.WriteLine("1. 공격");
-            Console.WriteLine("2. 스킬 사용");
-            Console.WriteLine("3. 아이템 사용");
-            Console.WriteLine("4. 도망");
-            Console.WriteLine("=====================\n");            
+            ActionSelectMenuText();
 
-            Console.WriteLine("=====================");
-            Console.Write("행동 선택 : ");
+            int line = 0;
+            foreach (var item in TextList)
+            {
+                Console.SetCursorPosition(2, SelectMenuPos[1]+line);
+                Console.Write(item);
+                line++;
+            }
+           
             try
             {
                 //중요하다
@@ -63,6 +81,7 @@ namespace MazeTPRG.Battle
 
                 int inputAction = int.Parse(Console.ReadLine ());
 
+                Console.SetCursorPosition(2, Console.GetCursorPosition().Top);
                 Console.WriteLine("=====================");
                 turnEnd = Action(inputAction);
             }
@@ -79,12 +98,13 @@ namespace MazeTPRG.Battle
             switch (action)
             {
                 case (int)PlayerAction.Attack:
+                    Console.SetCursorPosition(2, Console.GetCursorPosition().Top);
                     Console.Write("공격할 몬스터 선택 : ");           
                     
                     int AttackMonsterIndex = int.Parse(Console.ReadLine());
+                    Console.SetCursorPosition(2, Console.GetCursorPosition().Top);
                     Console.WriteLine("=====================");
                     Console.WriteLine();
-                    //몬스터가 사망하면 다시 순서를 정렬한다.
                     turnEnd = Player.Attack(AttackMonsterIndex);                    
                     return turnEnd;
 
@@ -96,7 +116,7 @@ namespace MazeTPRG.Battle
                     {
                         Console.WriteLine("                         ");
                     }
-                    Console.SetCursorPosition(SelectMenuPos[0], SelectMenuPos[1]);
+                    skillWindow.SetCursorPosY(SelectMenuPos[1]);
                     //스킬 시전
                     turnEnd = skillWindow.PrintSkillSelect();
                     return turnEnd;
