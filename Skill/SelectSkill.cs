@@ -43,18 +43,18 @@ namespace MazeTPRG.Skill
         {
             TextList.Clear();
 
-            TextList.Add("=====================");
+            TextList.Add("==================================");
             //강력한 공격
-            TextList.Add("1. 메가 슬래시");
+            TextList.Add($"1. 메가 슬래시    사용 마나 : {new Skill_A_MegaSlash().GetUseMana}");
             //소량의 데미지와 이속 감소
-            TextList.Add("2. 발목 긋기");
+            TextList.Add($"2. 발목 긋기     사용 마나 : {new Skill_B_AnkleSlit().GetUseMana}");
             //매 턴마다 일정한 출혈 데미지 부여
-            TextList.Add("3. 출혈 부여");
+            TextList.Add($"3. 출혈 부여     사용 마나 : {new Skill_C_Bleeding().GetUseMana}");
             //메뉴로 돌아가기
             TextList.Add("4. 취소");
-            TextList.Add("=====================\n");
+            TextList.Add("==================================\n");
 
-            TextList.Add("=====================");
+            TextList.Add("==================================");
             TextList.Add("사용할 스킬 선택 : ");
         }
 
@@ -78,7 +78,7 @@ namespace MazeTPRG.Skill
 
                 int inputAction = int.Parse(Console.ReadLine());
                 Console.SetCursorPosition(2, Console.GetCursorPosition().Top);
-                Console.WriteLine("=====================");
+                Console.WriteLine("==================================");
                 turnEnd = SelectTarget(inputAction);
                 //행동을 수행하였으면 true를 반환
             }
@@ -102,7 +102,7 @@ namespace MazeTPRG.Skill
                     Console.Write("공격할 몬스터 선택 : ");
                     int AttackMonsterIndex = int.Parse(Console.ReadLine());
                     Console.SetCursorPosition(2, Console.GetCursorPosition().Top);
-                    Console.WriteLine("=====================");
+                    Console.WriteLine("==================================");
                     Console.WriteLine();
                     //스킬을 사용했으면 true를 반환
                     turnEnd = item.Value.SkillEffect(AttackMonsterIndex-1);

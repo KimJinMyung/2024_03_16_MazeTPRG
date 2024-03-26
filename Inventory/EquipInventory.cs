@@ -30,11 +30,11 @@ namespace MazeTPRG.Inventory
         {
             //해당 아이템의 parts가 비어있는지 확인
             if (equipedInventory.ContainsKey(parts))
-            {
-                Console.WriteLine();
-                Console.WriteLine("이미 착용한 무기가 있습니다.");
+            {                
+                Remove(parts);
+                equipedInventory.Add(parts, item);
                 //Thread.Sleep(1000);
-                return false;
+                return true;
             }
             //비어있으면 장착
             else

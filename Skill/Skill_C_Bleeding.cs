@@ -24,8 +24,7 @@ namespace MazeTPRG.Skill
         public override bool SkillEffect(int monsterIndex)
         {
             this.Target = PlayerBattleMonsterList.GetBattleMonster(monsterIndex);
-            this.TargetIndex = monsterIndex;
-            this.EffectValue = Target.GetHP * 0.05;
+            this.TargetIndex = monsterIndex;            
 
             if (SkillCoolTime != 0)
             {
@@ -44,9 +43,9 @@ namespace MazeTPRG.Skill
             Player.HealMP(-UseMana);
             Console.WriteLine($"{this.skillName} 시전!!!\n");         
 
-            //50% 확률로 부여 성공
+            //80% 확률로 부여 성공
             int skillSuccess = new Random().Next(100);
-            if (skillSuccess >= 50)
+            if (skillSuccess >= 0)
             { 
                 Console.WriteLine("부여 성공!!!");
                 this.IsEffectDuaration = true; 
@@ -75,7 +74,10 @@ namespace MazeTPRG.Skill
             if (this.EffectDuration == 0) return;
 
             Console.WriteLine("출혈 발생!!");
+
+            this.EffectValue = Target.GetHP * 0.05;
             bool KillMonster = Target.Hurt(this.EffectValue);
+
             Thread.Sleep(1500);
 
             if (KillMonster)

@@ -75,7 +75,7 @@ namespace MazeTPRG.GameManager
                 //몬스터 초기화
                 monsters.Clear();
                 //몬스터 랜덤 스폰
-                for (int i = 0; i < 0/*new Random().Next(2, 5) + GameRound*/; i++)
+                for (int i = 0; i < 5/*new Random().Next(2, 5) + GameRound*/; i++)
                 {
                     MazeMonster mazeMonster = new MazeMonster();
                     mazeMonster.MazeMonsterSpawn(map);

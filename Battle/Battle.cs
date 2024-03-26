@@ -16,14 +16,13 @@ namespace MazeTPRG.Battle
         private SelectAction selectAction;
         private ItemList ItemList;
         private bool PlayerSurvive;
+        private int FirstBattleOrder;
 
         public bool GetPlayerSurvive { get { return PlayerSurvive; } }
         //플레이어 턴까지 남은 수
         private int playerTurnCount=0;
         //공격하는 몬스터의 index
-        private int AttackMonsterIndex;
-        //진행되는 턴의 수
-        private int playingTurnCount=0;
+        private int AttackMonsterIndex;        
 
         //배틀 종료 조건
         //배틀 몬스터 리스트의 모든 몬스터 제거
@@ -52,26 +51,25 @@ namespace MazeTPRG.Battle
             //공격하는 몬스터의 인덱스 초기화
             AttackMonsterIndex = 0;
 
-            int turnCound = 1;
+            int turnCound = 0;
 
             //여기에서부터 반복
             
             while (true)
-            {
+            {             
                 //몬스터와 플레이어의 순서 순회
-                playingTurnCount++;
-                if (playingTurnCount > BattleMonsterList.Count() + 1)
+                if (playerTurnCount == FirstBattleOrder)
                 {
                     turnCound++;
-
-                    //순회가 종료되면 다시 우선권을 정한다.
-                    SpeedFirstTurnDecide();
 
                     //플레이어의 스킬 지속 시간 및 쿨타임 감소                
                     selectAction.SkillCoolTimeMinus(turnCound);
 
-                    playingTurnCount = 0;
-                }
+                    //순회가 종료되면 다시 우선권을 정한다.
+                    SpeedFirstTurnDecide();
+
+                    // playingTurnCount = 0;
+                }                                
 
                 Console.Clear();
 
@@ -101,15 +99,15 @@ namespace MazeTPRG.Battle
                 //플레이어의 배틀 정보창 출력
                 player.PrintBattlePlayerInfo();
 
-                Console.WriteLine();
+                Console.WriteLine();                
+
                 //플레이어 턴
                 if (playerTurnCount <= 0)
                 {                   
                     //플레이어의 행동 선택                   
                     bool PlayerTurnEnd = selectAction.Select();
                     if (!PlayerTurnEnd) 
-                    {
-                        playingTurnCount--;
+                    {                        
                         continue;
                     }
                     
@@ -136,6 +134,7 @@ namespace MazeTPRG.Battle
                         PlayerSurvive = false;
                         break;
                     }
+
                     Thread.Sleep(1500);
 
                     //공격을 받은 플레이어의 체력 출력
@@ -166,7 +165,7 @@ namespace MazeTPRG.Battle
                     else if (random < 90) MaxLoopCount = 2;
                     else MaxLoopCount = 3;                    
 
-                    for (int i = 0; i <= MaxLoopCount; i++)
+                    for (int i = 0; i < MaxLoopCount; i++)
                     {
                         int getItemIndex = new Random().Next(ItemList.GetLength);
                         if (ItemList.GetItem(getItemIndex) != default) 
@@ -190,6 +189,7 @@ namespace MazeTPRG.Battle
             {                
                 if (player.GetSpeed < item.GetSpeed) playerTurnCount++;
             }
+            FirstBattleOrder = playerTurnCount;
         }
 
         public void PrintCompareSpeed()

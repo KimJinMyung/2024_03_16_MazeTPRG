@@ -22,6 +22,7 @@ namespace MazeTPRG.Skill
 
         protected Monster.Monster Target;
 
+        public double GetUseMana { get { return UseMana; } }
         public SkillClass()
         {
             this.Player = Player.Instance;

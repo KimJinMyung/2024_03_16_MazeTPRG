@@ -14,7 +14,7 @@ namespace MazeTPRG.Skill
         public Skill_A_MegaSlash()
         {
             this.skillName = "메가 슬래시";
-            this.EffectValue = Player.GetATK * 1.5;
+            this.EffectValue = Player.GetATK * 1.8;
             this.UseMana = 30;
             this.SkillCoolTime = 0;
         }
