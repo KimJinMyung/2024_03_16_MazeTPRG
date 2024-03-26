@@ -24,9 +24,9 @@ namespace MazeTPRG
             ConsoleKeyInfo InputKey = Console.ReadKey();
 
             //게임 스토리 출력
-            StoryUI storyUI = new StoryUI();
-            while (Console.KeyAvailable) { Console.ReadKey(true); }
-            ConsoleKeyInfo InputKey2 = Console.ReadKey();
+            //StoryUI storyUI = new StoryUI();
+            //while (Console.KeyAvailable) { Console.ReadKey(true); }
+            //ConsoleKeyInfo InputKey2 = Console.ReadKey();
 
             //게임 시작
             MazeGameManager mazeGame = new MazeGameManager(15, 15);

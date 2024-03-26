@@ -44,7 +44,7 @@ namespace MazeTPRG.GameManager
             while (true)
             {
                 GameRound++;
-                //3라운드까지 
+                //3라운드까지  
                 if (GameRound > 3) 
                 { 
                     //3라운드가 끝나면 엔딩 실행
@@ -52,7 +52,7 @@ namespace MazeTPRG.GameManager
                     break; 
                 }else
                 {
-                    map = new Map(width + 10*(GameRound-1), height + 10*(GameRound-1));
+                    map = new Map(width + 5*(GameRound-1), height + 5*(GameRound-1));
                 }                
 
                 //플레이어 랜덤 스폰
@@ -74,7 +74,7 @@ namespace MazeTPRG.GameManager
                 //몬스터 초기화
                 monsters.Clear();
                 //몬스터 랜덤 스폰
-                for (int i = 0; i < new Random().Next(5, 8); i++)
+                for (int i = 0; i < 0/*new Random().Next(2, 5) + GameRound*/; i++)
                 {
                     MazeMonster mazeMonster = new MazeMonster();
                     mazeMonster.MazeMonsterSpawn(map);
@@ -102,6 +102,7 @@ namespace MazeTPRG.GameManager
                     if (playermaze.GetBattleStart)
                     {
                         //텍스트 출력
+                        Console.SetCursorPosition(2* map.width + 6, height - 2);
                         Console.WriteLine("몬스터와 조우했다.");
                         Thread.Sleep(1000);
 
@@ -199,7 +200,7 @@ namespace MazeTPRG.GameManager
                                 int getItemIndex = new Random().Next(ItemList.GetLength);
 
                                 //아이템 출력 텍스트 위치 설정
-                                Console.SetCursorPosition(width * 2 + 3, height - 1);
+                                Console.SetCursorPosition(map.width * 2 + 6, height - 1);
 
                                 //아이템 리스트가 비어있지 않으면(꽝에 걸리지 않으면)
                                 if (ItemList.GetItem(getItemIndex) != default)
