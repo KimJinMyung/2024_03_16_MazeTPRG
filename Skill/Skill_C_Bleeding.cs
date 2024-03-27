@@ -71,7 +71,9 @@ namespace MazeTPRG.Skill
 
         public void Bleeding(int monsterIndex)
         {
-            if (this.EffectDuration == 0) return;
+            if (this.EffectDuration == 0) { this.UseSkill = false; return; }
+            if (PlayerBattleMonsterList.Count() <= 0) { this.UseSkill = false; return; }
+            if (PlayerBattleMonsterList.GetBattleMonster(monsterIndex) != this.Target) { this.UseSkill = false; return; }
 
             Console.WriteLine("출혈 발생!!");
 
@@ -87,15 +89,21 @@ namespace MazeTPRG.Skill
         }
 
         public override void EndSkillEffect()
-        {
-            if (!this.UseSkill) return;
-            if (Target != PlayerBattleMonsterList.GetBattleMonster(TargetIndex)) return;
-            if (PlayerBattleMonsterList.GetBattleMonster(TargetIndex) == default) return;
+        {            
+            if (!this.UseSkill) { this.UseSkill = false; return; }
+            //if (Target != PlayerBattleMonsterList.GetBattleMonster(TargetIndex)) return;
+            //if (PlayerBattleMonsterList.GetBattleMonster(TargetIndex) == default) return;
+
+            bool isNotTargetMonster = true;
+            for (int i = 0; i < PlayerBattleMonsterList.Count(); i++)
+            {
+                if (PlayerBattleMonsterList.GetBattleMonster(i) == this.Target) isNotTargetMonster = false;
+            }
+            if (isNotTargetMonster) { this.UseSkill = false; return; }
+
             this.IsEffectDuaration = false;
-            Console.WriteLine($"{this.skillName}의 지속시간이 끝났습니다.\n");
-            Console.WriteLine("=============================");
-            Console.WriteLine($"{Target.GetMonsterName}의 현재 속도 : {Target.GetSpeed}");
-            Console.WriteLine("=============================\n");
+            Console.WriteLine($"{this.skillName}의 지속시간이 끝났습니다.\n");            
+            this.UseSkill = false ;
         }
     }
 }

@@ -74,11 +74,20 @@ namespace MazeTPRG.Skill
 
         public override void EndSkillEffect()
         {
-            if (!this.UseSkill) return;
-            if(Target != PlayerBattleMonsterList.GetBattleMonster(TargetIndex)) return;
-            if (PlayerBattleMonsterList.GetBattleMonster(TargetIndex) == default) return;
+            if (PlayerBattleMonsterList.Count() <= 0) { this.UseSkill = false; return; }
+            if (!this.UseSkill) { this.UseSkill = false; return; }
+            //if(Target != PlayerBattleMonsterList.GetBattleMonster(TargetIndex)) return;
+            //if (PlayerBattleMonsterList.GetBattleMonster(TargetIndex) == default) return;
+            bool isNotTargetMonster = true;
+            for (int i = 0; i < PlayerBattleMonsterList.Count(); i++)
+            {
+                if(PlayerBattleMonsterList.GetBattleMonster(i) == this.Target) isNotTargetMonster = false;
+            }
+            if (isNotTargetMonster) { this.UseSkill = false; return; }
+
             Target.SpeedValueTrans(-SpeedDownValue);
-            Console.WriteLine($"{this.skillName}의 지속시간이 끝났습니다.\n");            
+            Console.WriteLine($"{this.skillName}의 지속시간이 끝났습니다.\n");        
+            this.UseSkill = false;
         }
 
     }

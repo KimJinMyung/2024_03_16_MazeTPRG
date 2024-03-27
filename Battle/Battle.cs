@@ -90,7 +90,10 @@ namespace MazeTPRG.Battle
                         playingCount--;
                         continue;
                     }
-                    
+
+                    tempPos[0] = Console.GetCursorPosition().Left;
+                    tempPos[1] = Console.GetCursorPosition().Top;
+
                     //도망을 선택한 경우
                     if (selectAction.GetBattleEnd == true)
                     {
@@ -146,6 +149,9 @@ namespace MazeTPRG.Battle
                     //순회가 종료되면 다시 우선권을 정한다.
                     SpeedFirstTurnDecide();
 
+                    tempPos[0] = Console.GetCursorPosition().Left;
+                    tempPos[1] = Console.GetCursorPosition().Top;
+
                     playingCount = 0;
                 }
 
@@ -167,6 +173,7 @@ namespace MazeTPRG.Battle
 
                     for (int i = 0; i < MaxLoopCount; i++)
                     {
+                        Console.SetCursorPosition(tempPos[0], tempPos[1] + 1);
                         int getItemIndex = new Random().Next(ItemList.GetLength);
                         if (ItemList.GetItem(getItemIndex) != default) 
                             player.AddItem(ItemList.GetItem(getItemIndex), 1);                        
